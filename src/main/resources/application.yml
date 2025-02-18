@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: user_center
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/steven_universe
+    username: root
+    password: Pangjia,203426
+server:
+  port: 8080
+
+
+
