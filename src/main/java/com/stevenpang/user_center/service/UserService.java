@@ -2,6 +2,7 @@ package com.stevenpang.user_center.service;
 
 import com.stevenpang.user_center.model.User;
 import com.baomidou.mybatisplus.extension.service.IService;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
 * @author lenovo
@@ -18,4 +19,11 @@ public interface UserService extends IService<User> {
      */
     long userRegister(String userAccount, String userPassword, String checkPassword);
 
+    /**
+     *
+     * @param userAccount   用户账户
+     * @param userPassword  用户密码
+     * @return  返回脱敏的用户信息
+     */
+    User userLogin(String userAccount, String userPassword, HttpServletRequest request);
 }
