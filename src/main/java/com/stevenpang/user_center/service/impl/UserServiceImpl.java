@@ -1,13 +1,10 @@
 package com.stevenpang.user_center.service.impl;
-import java.util.Date;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.stevenpang.user_center.model.User;
 import com.stevenpang.user_center.mapper.UserMapper;
 import com.stevenpang.user_center.service.UserService;
-import io.netty.util.internal.MathUtil;
-import io.netty.util.internal.StringUtil;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -15,10 +12,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
-import java.awt.*;
-import java.security.MessageDigest;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static com.stevenpang.user_center.constant.UserConstant.USER_LOGIN_STATE;
 
 /**
  * 用户实现类
@@ -37,11 +34,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     /**
      * 盐值，混淆密码
      */
-    private static final String SALT = "Steven";
-    /**
-     * 用户登录态键
-     */
-    private static final String UER_LOGIN_STATE = "userLoginState";
+    public static final String SALT = "Steven";
+
     @Override
     public long userRegister(String userAccount, String userPassword, String checkPassword) {
         // 1. 校验
@@ -120,22 +114,35 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             return null;
         }
         //  3. 用户脱敏
-        User safetyUser = new User();
-        safetyUser.setId(user.getId());
-        safetyUser.setUsername(user.getUsername());
-        safetyUser.setUserAccount(user.getUserAccount());
-        safetyUser.setAvatarUrl(user.getAvatarUrl());
-        safetyUser.setGender(user.getGender());
-        safetyUser.setPhone(user.getPhone());
-        safetyUser.setEmail(user.getEmail());
-        safetyUser.setUserStatus(user.getUserStatus());
-        safetyUser.setCreateTime(user.getCreateTime());
-        safetyUser.setUpdateTime(user.getUpdateTime());
-
+        User safetyUser = getSafetyUser(user);
         //  4. 记录用户登录态
-        request.getSession().setAttribute(UER_LOGIN_STATE, safetyUser);
+        request.getSession().setAttribute(USER_LOGIN_STATE, safetyUser);
 
         return safetyUser;
+
+    }
+
+    /**
+     *
+     * @param originUser
+     * @return
+     */
+    @Override
+    public User getSafetyUser(User originUser) {
+        User safetyUser = new User();
+        safetyUser.setId(originUser.getId());
+        safetyUser.setUsername(originUser.getUsername());
+        safetyUser.setUserAccount(originUser.getUserAccount());
+        safetyUser.setAvatarUrl(originUser.getAvatarUrl());
+        safetyUser.setGender(originUser.getGender());
+        safetyUser.setPhone(originUser.getPhone());
+        safetyUser.setEmail(originUser.getEmail());
+        safetyUser.setUserStatus(originUser.getUserStatus());
+        safetyUser.setCreateTime(originUser.getCreateTime());
+        safetyUser.setUpdateTime(originUser.getUpdateTime());
+        safetyUser.setUserRole(originUser.getUserRole());
+        return safetyUser;
+
 
     }
 }

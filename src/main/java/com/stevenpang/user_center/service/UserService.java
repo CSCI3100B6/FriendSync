@@ -10,6 +10,10 @@ import jakarta.servlet.http.HttpServletRequest;
 * @createDate 2025-02-18 10:35:17
 */
 public interface UserService extends IService<User> {
+
+
+
+
     /**
      * 用户注册
      * @param userAccount   用户账户
@@ -26,4 +30,6 @@ public interface UserService extends IService<User> {
      * @return  返回脱敏的用户信息
      */
     User userLogin(String userAccount, String userPassword, HttpServletRequest request);
+
+    User getSafetyUser(User originUser);
 }
