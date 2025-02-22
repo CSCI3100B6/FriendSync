@@ -35,7 +35,7 @@ public class UserService implements IUserService {
     public User register(UserDto user) {
         User userInfo = userRepository.findByEmail(user.getEmail());
         if (userInfo != null) {
-            throw new RegisterException("exist account, repeat sign up");
+            throw new RegisterException("registered email");
         }
         if (user.getEmail() == null) {
             throw new RegisterException("email can not be empty");
@@ -57,7 +57,7 @@ public class UserService implements IUserService {
     public User login(UserDto user, HttpSession session) {
         User userInfo = userRepository.findByEmail(user.getEmail());
         if (userInfo == null) {
-            throw new LoginException("not sign up email");
+            throw new LoginException("unregistered email");
         } else if (user.getPassword() == null) {
             throw new LoginException("empty password");
         }

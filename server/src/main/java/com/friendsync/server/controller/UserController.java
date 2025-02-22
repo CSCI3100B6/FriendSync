@@ -43,7 +43,7 @@ public class UserController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         if (userInfo != null)
-            return new ResponseEntity<>("seccess to login", HttpStatus.ACCEPTED);
+            return new ResponseEntity<>("seccess to login", HttpStatus.OK);
         else
             return new ResponseEntity<>("wrong password", HttpStatus.UNAUTHORIZED);
     }

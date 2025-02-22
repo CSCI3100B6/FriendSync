@@ -2,10 +2,12 @@
 
 ## Quick start
 
+The recommanded java version is java 23.
+
 1. If `sh` is in environment
    Run `gradlew bootRun` to start the server
 2. If there is no `sh` in environment
-   You need to install `gradle` to run the server. Recommand version is `Gradle 8.12.1`.
+   You need to install `gradle` to run the server. Recommanded version is `Gradle 8.12.1`.
    Then run `gradle bootRun` to start the server.
 
 The server will run on the port `8088`. Please make sure the is no conflict on this port.
