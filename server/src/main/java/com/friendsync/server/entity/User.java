@@ -26,6 +26,13 @@ public class User {
     @Column(name = "curr_session", nullable = true, unique = true)
     private String currentSession;
 
+    public User() {
+        this.email = null;
+        this.password = null;
+        this.name = null;
+        this.currentSession = null;
+    }
+
     public User(String email, String password, String name) {
         this.email = email;
         this.password = password;

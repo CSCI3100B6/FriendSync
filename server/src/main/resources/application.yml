@@ -1,5 +1,9 @@
 server:
   port: 8088
+  servlet:
+    session:
+      # session will get timeout after 30 minutes
+      timeout: 30m
 
 spring:
   application:

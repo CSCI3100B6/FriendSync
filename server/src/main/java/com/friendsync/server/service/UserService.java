@@ -9,8 +9,11 @@ import org.springframework.stereotype.Service;
 
 import com.friendsync.server.entity.User;
 import com.friendsync.server.entity.dto.UserDto;
-import com.friendsync.server.exception.SignUpException;
+import com.friendsync.server.exception.LoginException;
+import com.friendsync.server.exception.RegisterException;
 import com.friendsync.server.repository.UserRepository;
+
+import jakarta.servlet.http.HttpSession;
 
 @Service
 public class UserService implements IUserService {
@@ -29,12 +32,15 @@ public class UserService implements IUserService {
     }
     
     @Override
-    public User addUser(UserDto user) {
-        
+    public User register(UserDto user) {
+        User userInfo = userRepository.findByEmail(user.getEmail());
+        if (userInfo != null) {
+            throw new RegisterException("exist account, repeat sign up");
+        }
         if (user.getEmail() == null) {
-            throw new SignUpException("email can not be empty");
+            throw new RegisterException("email can not be empty");
         } else if (user.getPassword() == null) {
-            throw new SignUpException("password can not be empty");
+            throw new RegisterException("password can not be empty");
         }
 
         byte[] hashBytes = digest.digest(user.getPassword().getBytes());
@@ -46,4 +52,24 @@ public class UserService implements IUserService {
         userRepository.save(newUser);
         return newUser;
     }
+
+    @Override
+    public User login(UserDto user, HttpSession session) {
+        User userInfo = userRepository.findByEmail(user.getEmail());
+        if (userInfo == null) {
+            throw new LoginException("not sign up email");
+        } else if (user.getPassword() == null) {
+            throw new LoginException("empty password");
+        }
+        byte[] hashBytes = digest.digest(user.getPassword().getBytes());
+        String hashString = String.format("%064x", new BigInteger(1, hashBytes));
+        if (hashString == null ? userInfo.getPassword() == null : hashString.equals(userInfo.getPassword())) {
+            userInfo.setCurrentSession(session.getId());
+            userRepository.save(userInfo);
+            return userInfo;
+        } else {
+            return null;
+        }
+    }
+    
 }
