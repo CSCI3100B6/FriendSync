@@ -1,4 +1,4 @@
-package com.friendsync.server;
+package com.friendsync.server.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -8,7 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "user")
+@Table(name = "tb_user")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +23,7 @@ public class User {
     @Column(nullable = false, unique = false)
     private String name;
 
-    @Column(nullable = true, unique = true)
+    @Column(name = "curr_session", nullable = true, unique = true)
     private String currentSession;
 
     public User(String email, String password, String name) {

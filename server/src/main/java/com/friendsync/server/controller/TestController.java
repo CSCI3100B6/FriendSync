@@ -1,4 +1,4 @@
-package com.friendsync.server;
+package com.friendsync.server.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpSession;
 @RequestMapping("/test")
 public class TestController {
 
-    @GetMapping("/")
+    @GetMapping("")
 	public String getUser(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		StringBuilder sb = new StringBuilder();
