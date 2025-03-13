@@ -12,14 +12,14 @@ import jakarta.persistence.Id;
 public class Message {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private long msgID;
+    private Long msgID;
 
     @Column(nullable=false, unique=false)
-    private long senderID;
+    private Long conversationID;
 
     @Column(nullable=false, unique=false)
-    private long conversationID;
-    
+    private Long senderID;
+
     @Column(nullable=false, unique=false)
     private Time sendTime;
 
@@ -27,27 +27,27 @@ public class Message {
     private String msgContent;
 
 
-    public long getMsgID() {
+    public Long getMsgID() {
         return msgID;
     }
 
-    public void setMsgID(long msgID) {
+    public void setMsgID(Long msgID) {
         this.msgID = msgID;
     }
 
-    public long getSenderID() {
+    public Long getSenderID() {
         return senderID;
     }
 
-    public void setSenderID(long senderID) {
+    public void setSenderID(Long senderID) {
         this.senderID = senderID;
     }
 
-    public long getConversationID() {
+    public Long getConversationID() {
         return conversationID;
     }
 
-    public void setConversationID(long conversationID) {
+    public void setConversationID(Long conversationID) {
         this.conversationID = conversationID;
     }
 
