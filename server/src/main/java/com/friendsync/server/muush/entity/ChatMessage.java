@@ -1,4 +1,4 @@
-package com.friendsync.server.entity;
+package com.friendsync.server.muush.entity;
 
 import java.sql.Time;
 
@@ -9,7 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
-public class Message {
+public class ChatMessage {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long msgID;
@@ -26,6 +26,15 @@ public class Message {
     @Column(nullable=true, unique=false)
     private String msgContent;
 
+    public ChatMessage() {}
+
+    public ChatMessage(Long msgID, Long conversationID, Long senderID, Time sendTime, String msgContent) {
+        this.msgID = msgID;
+        this.conversationID = conversationID;
+        this.senderID = senderID;
+        this.sendTime = sendTime;
+        this.msgContent = msgContent;
+    }
 
     public Long getMsgID() {
         return msgID;
