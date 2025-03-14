@@ -1,4 +1,4 @@
-package com.friendsync.server.muush.controller;
+package com.friendsync.muush.controller;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

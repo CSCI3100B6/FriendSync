@@ -1,4 +1,4 @@
-package com.friendsync.server.muush.entity;
+package com.friendsync.muush.entity;
 
 import java.sql.Time;
 

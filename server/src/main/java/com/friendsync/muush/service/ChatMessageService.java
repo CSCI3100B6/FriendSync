@@ -1,4 +1,4 @@
-package com.friendsync.server.muush.service;
+package com.friendsync.muush.service;
 
 import static java.lang.Math.min;
 import java.sql.Time;
@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.friendsync.server.muush.entity.ChatMessage;
-import com.friendsync.server.muush.repository.ChatMessageRepository;
+import com.friendsync.muush.entity.ChatMessage;
+import com.friendsync.muush.repository.ChatMessageRepository;
 
 @Service
 public class ChatMessageService {
