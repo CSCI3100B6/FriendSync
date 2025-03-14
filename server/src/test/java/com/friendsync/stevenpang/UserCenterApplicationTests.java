@@ -1,4 +1,4 @@
-package com.stevenpang.user_center;
+package com.friendsync.stevenpang;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

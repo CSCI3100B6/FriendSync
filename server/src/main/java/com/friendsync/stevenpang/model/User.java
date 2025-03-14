@@ -1,4 +1,4 @@
-package com.stevenpang.user_center.model;
+package com.friendsync.stevenpang.model;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;

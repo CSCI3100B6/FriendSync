@@ -1,6 +1,6 @@
-package com.stevenpang.user_center.mapper;
+package com.friendsync.stevenpang.mapper;
 
-import com.stevenpang.user_center.model.User;
+import com.friendsync.stevenpang.model.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**

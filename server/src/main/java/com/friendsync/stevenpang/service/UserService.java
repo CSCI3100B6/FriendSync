@@ -1,6 +1,6 @@
-package com.stevenpang.user_center.service;
+package com.friendsync.stevenpang.service;
 
-import com.stevenpang.user_center.model.User;
+import com.friendsync.stevenpang.model.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 import jakarta.servlet.http.HttpServletRequest;
 

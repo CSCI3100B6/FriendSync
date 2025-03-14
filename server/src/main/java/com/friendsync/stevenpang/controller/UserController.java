@@ -1,11 +1,11 @@
-package com.stevenpang.user_center.controller;
+package com.friendsync.stevenpang.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.stevenpang.user_center.model.User;
-import com.stevenpang.user_center.model.request.UserLoginRequest;
-import com.stevenpang.user_center.model.request.UserRegisterRequest;
-import com.stevenpang.user_center.service.UserService;
-import io.netty.util.internal.StringUtil;
+import com.friendsync.stevenpang.constant.UserConstant;
+import com.friendsync.stevenpang.model.User;
+import com.friendsync.stevenpang.model.request.UserRegisterRequest;
+import com.friendsync.stevenpang.service.UserService;
+import com.friendsync.stevenpang.model.request.UserLoginRequest;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
@@ -14,9 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static com.stevenpang.user_center.constant.UserConstant.ADMIN_ROLE;
-import static com.stevenpang.user_center.constant.UserConstant.USER_LOGIN_STATE;
 
 
 /**
@@ -91,9 +88,9 @@ public class UserController {
      */
     private boolean isAdmin(HttpServletRequest request) {
         // 鉴权，仅管理员可查询
-        Object userObj = request.getSession().getAttribute(USER_LOGIN_STATE);
+        Object userObj = request.getSession().getAttribute(UserConstant.USER_LOGIN_STATE);
         User user = (User) userObj;
-        return user != null && user.getUserRole() == ADMIN_ROLE;
+        return user != null && user.getUserRole() == UserConstant.ADMIN_ROLE;
 
     }
 

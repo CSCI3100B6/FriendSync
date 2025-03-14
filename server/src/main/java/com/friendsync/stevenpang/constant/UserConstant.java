@@ -1,4 +1,4 @@
-package com.stevenpang.user_center.constant;
+package com.friendsync.stevenpang.constant;
 /**
  * 用户常量
  * @author Stevenpang

@@ -1,10 +1,10 @@
-package com.stevenpang.user_center.service.impl;
+package com.friendsync.stevenpang.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.stevenpang.user_center.model.User;
-import com.stevenpang.user_center.mapper.UserMapper;
-import com.stevenpang.user_center.service.UserService;
+import com.friendsync.stevenpang.model.User;
+import com.friendsync.stevenpang.mapper.UserMapper;
+import com.friendsync.stevenpang.service.UserService;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +15,7 @@ import org.springframework.util.DigestUtils;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.stevenpang.user_center.constant.UserConstant.USER_LOGIN_STATE;
+import static com.friendsync.stevenpang.constant.UserConstant.USER_LOGIN_STATE;
 
 /**
  * 用户实现类

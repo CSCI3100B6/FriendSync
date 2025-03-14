@@ -1,6 +1,6 @@
-package com.stevenpang.user_center.service;
+package com.friendsync.stevenpang.service;
 
-import com.stevenpang.user_center.model.User;
+import com.friendsync.stevenpang.model.User;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

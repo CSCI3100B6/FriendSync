@@ -1,4 +1,4 @@
-package com.stevenpang.user_center.model.request;
+package com.friendsync.stevenpang.model.request;
 
 import lombok.Data;
 

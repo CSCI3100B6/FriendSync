@@ -1,4 +1,4 @@
-package com.stevenpang.user_center;
+package com.friendsync.stevenpang;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
