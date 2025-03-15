@@ -8,11 +8,11 @@
         <version>3.4.2</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.Stevenpang</groupId>
-    <artifactId>user_center</artifactId>
+    <groupId>com.friendsync</groupId>
+    <artifactId>server</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>user_center</name>
-    <description>user_center</description>
+    <name>server</name>
+    <description>the server of FriendSync</description>
     <url/>
     <licenses>
         <license/>
@@ -68,7 +68,7 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.17.0</version>
+            <!-- <version>3.17.0</version> -->
         </dependency>
         <dependency>
             <groupId>com.oracle.database.jdbc</groupId>
@@ -96,13 +96,8 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
-            <version>1.18.36</version> <!-- 使用最新版本 -->
+            <!-- <version>1.18.36</version> 使用最新版本 -->
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
