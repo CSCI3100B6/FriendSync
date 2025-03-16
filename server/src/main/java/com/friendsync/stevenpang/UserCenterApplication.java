@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.mybatis.spring.annotation.MapperScan;
 
 @SpringBootApplication
-@MapperScan("com.stevenpang.user_center.mapper")
+@MapperScan("com.friendsync.stevenpang.mapper")
 public class UserCenterApplication {
 
     public static void main(String[] args) {
