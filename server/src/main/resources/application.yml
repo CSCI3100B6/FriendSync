@@ -2,10 +2,10 @@ spring:
   application:
     name: server
   datasource:
-    driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/steven_universe
-    username: root
-    password: B6
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/friendsync?allowPublicKeyRetrieval=true
+    username: B6
+    password: csci3100
   # session 失效时间
   session:
     timeout: 86400

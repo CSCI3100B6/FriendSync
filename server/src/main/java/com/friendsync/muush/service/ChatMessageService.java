@@ -2,28 +2,11 @@ package com.friendsync.muush.service;
 
 import java.util.List;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.friendsync.muush.repo.ChatMessage;
 
-import org.springframework.stereotype.Service;
-
-import com.friendsync.muush.data.ChatMessage;
-import com.friendsync.muush.mapper.ChatMessageMapper;
-
-import jakarta.annotation.Resource;
-import lombok.extern.slf4j.Slf4j;
-
-@Service
-@Slf4j
-public class ChatMessageService extends ServiceImpl<ChatMessageMapper, ChatMessage> {
-
-    @Resource
-    private ChatMessageMapper msgMapper;
-
-    public List<ChatMessage> getRecentChatMessagesByConversationID(Long conversationID, int offset, int num) {
-        return msgMapper.selectChatMessagesOrderByTime(conversationID, offset, num);
-    }
-
-    public int addMessage(ChatMessage msg) {
-        return msgMapper.insert(msg);
-    }
+public interface ChatMessageService extends IService<ChatMessage> {
+    public List<ChatMessage> getRecentChatMessagesByConversationID(Long conversationId, int offset, int num);
+    public int addMessage(ChatMessage msg);
+    public int deleteMessage(Long msgId);
 }

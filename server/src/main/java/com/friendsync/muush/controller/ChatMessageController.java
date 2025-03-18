@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.friendsync.muush.service.ChatMessageService;
+import com.friendsync.muush.service.impl.ChatMessageServiceImpl;
 
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,7 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
 public class ChatMessageController {
 
     @Resource
-    private ChatMessageService msgService;
+    private ChatMessageServiceImpl msgService;
 
     @PostMapping("/get")
     public String getMsg(HttpServletRequest request /* msgDTO Session */ ) {
