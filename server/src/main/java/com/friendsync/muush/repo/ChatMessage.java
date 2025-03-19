@@ -1,7 +1,7 @@
 package com.friendsync.muush.repo;
 
 import java.io.Serializable;
-import java.sql.Time;
+import java.sql.Timestamp;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -24,7 +24,7 @@ public class ChatMessage implements Serializable {
     private Long senderId;
 
     @TableField("send_time")
-    private Time sendTime;
+    private Timestamp sendTime;
 
     @TableField("msg_content")
     private String msgContent;

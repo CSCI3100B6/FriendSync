@@ -24,10 +24,12 @@ public class ChatMessageServiceImpl extends ServiceImpl<ChatMessageMapper, ChatM
     @Override
     public List<ChatMessage> getRecentChatMessagesByConversationID(Long conversationId, int offset, int num) {
         QueryWrapper<ChatMessage> wrapper = new QueryWrapper<ChatMessage>()
-            .select("conversation_id", "send_time")
-            .eq("converation_id", conversationId)
-            .orderByDesc(false, "send_time");
-        return chatMessageMapper.selectList(wrapper).subList(offset, num);
+            .eq("conversation_id", conversationId)
+            .orderByDesc("send_time")
+            .last("OFFSET " + offset)
+            .last("LIMIT " + num);
+        List<ChatMessage> allMsg = chatMessageMapper.selectList(wrapper);
+        return allMsg;
     }
 
     @Override
@@ -36,7 +38,7 @@ public class ChatMessageServiceImpl extends ServiceImpl<ChatMessageMapper, ChatM
     }
 
     @Override
-    public int deleteMessage(Long msgId) {
-        return chatMessageMapper.deleteById(msgId);
+    public int deleteMessage(ChatMessage msg) {
+        return chatMessageMapper.deleteById(msg);
     }
 }
