@@ -4,6 +4,8 @@ import com.friendsync.stevenpang.model.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 import jakarta.servlet.http.HttpServletRequest;
 
+import java.util.List;
+
 /**
 * @author lenovo
 * @description 针对表【user(用户)】的数据库操作Service
@@ -41,4 +43,12 @@ public interface UserService extends IService<User> {
      * @return
      */
     int userLogout(HttpServletRequest request);
+
+    /**
+     * 根据标签搜索用户
+     *
+     * @param tagList
+     * @return
+     */
+    List<User> searchUserByTags(List<String> tagList);
 }
