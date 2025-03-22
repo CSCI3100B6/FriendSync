@@ -1,62 +1,81 @@
+<script setup>
+import { ref } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import { Toast } from "vant";
+import Index from "../pages/Index.vue";
+import Team from "../pages/Team.vue";
+import Profile from "../pages/Profile.vue";
+
+const router = useRouter();
+const route = useRoute();
+const active = ref(route.path.replace("/", "") || "index");
+
+const onClickLeft = () => {
+  // 处理返回按钮点击事件
+  router.back();
+  alert("返回按钮点击");
+};
+
+const onClickRight = () => {
+  // 处理右侧按钮点击事件
+  alert("右侧按钮点击");
+};
+
+// const active = ref("index"); // 默认选中的标签索引
+const getPageTitle = () => {
+  switch (active.value) {
+    case "profile":
+      return "User Profile";
+    case "team":
+      return "队伍";
+    case "index":
+    default:
+      return "FriendSync";
+  }
+};
+
+const onChange = (index) => {
+  // 标签切换时触发，显示切换的标签索引
+  // Toast(`标签 ${index + 1}`);
+  router.push(`/${name}`);
+  // active.value = name;
+};
+</script>
+
 <template>
   <div class="basic-layout">
     <van-nav-bar
-        title="标题"
-        left-arrow
-        @click-left="onClickLeft"
-        @click-right="onClickRight"
+      :title="getPageTitle()"
+      left-arrow
+      @click-left="onClickLeft"
+      @click-right="onClickRight"
     >
-      <template #right>
+      <template v-if="active !== 'profile'" #right>
         <van-icon name="search" size="20" />
       </template>
     </van-nav-bar>
-
 
     <div class="content">
       <template v-if="active === 'index'">
         <Index />
       </template>
-      <template v-if="active == 'team'">
+      <template v-if="active === 'team'">
         <Team />
       </template>
-
-      <slot name = "content">
-      </slot> <!-- 插槽用于插入页面内容 -->
+      <template v-if="active === 'profile'">
+        <Profile />
+      </template>
+      <!-- <slot name="content"> </slot>
+      插槽用于插入页面内容  -->
     </div>
 
     <van-tabbar v-model="active" @change="onChange">
       <van-tabbar-item icon="home-o" name="index">主页</van-tabbar-item>
       <van-tabbar-item icon="search" name="team">队伍</van-tabbar-item>
-      <van-tabbar-item icon="friends-o" name="ueser">个人</van-tabbar-item>
-
+      <van-tabbar-item icon="friends-o" name="profile">个人</van-tabbar-item>
     </van-tabbar>
   </div>
 </template>
-
-<script setup>
-import { ref } from 'vue';
-import { Toast } from 'vant';
-import Index from "../pages/Index.vue";
-import Team from "../pages/Team.vue"; // 引入 Toast 组件
-
-
-const onClickLeft = () => {
-  // 处理返回按钮点击事件
-  alert('返回按钮点击');
-};
-
-const onClickRight = () => {
-  // 处理右侧按钮点击事件
-  alert('右侧按钮点击');
-};
-
-const active = ref("index"); // 默认选中的标签索引
-
-const onChange = (index) => {
-  // 标签切换时触发，显示切换的标签索引
-  Toast(`标签 ${index + 1}`);
-};
-</script>
 
 <style scoped>
 van-nav-bar {

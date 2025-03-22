@@ -1,12 +1,20 @@
 <script setup lang="ts">
-import BasicLayout from './layouts/BasicLayout.vue';
+import { computed } from "vue";
+import { useRoute } from "vue-router";
+import BasicLayout from "./layouts/BasicLayout.vue";
+
+const route = useRoute();
+const layoutType = computed(() => route.meta.layout || "default");
 </script>
 
 <template>
-  <BasicLayout />
+  <div v-if="layoutType === 'empty'">
+    <router-view />
+  </div>
+  <div v-else>
+    <BasicLayout />
+  </div>
 </template>
-
-
 
 <style scoped>
 van-nav-bar {
@@ -18,5 +26,4 @@ van-tabbar {
   width: 100%;
   box-sizing: border-box;
 }
-
 </style>
