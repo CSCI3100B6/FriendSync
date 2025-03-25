@@ -7,6 +7,9 @@ import com.friendsync.stevenpang.exception.BusinessException;
 import com.friendsync.stevenpang.model.User;
 import com.friendsync.stevenpang.mapper.UserMapper;
 import com.friendsync.stevenpang.service.UserService;
+import com.google.gson.Gson;
+import com.google.gson.TypeAdapter;
+import com.google.gson.reflect.TypeToken;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +19,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.DigestUtils;
 
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -158,6 +162,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         safetyUser.setCreateTime(originUser.getCreateTime());
         safetyUser.setUpdateTime(originUser.getUpdateTime());
         safetyUser.setUserRole(originUser.getUserRole());
+        safetyUser.setTags(originUser.getTags());
         return safetyUser;
     }
 
@@ -176,7 +181,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
 
     /**
      * 根据标签搜索用户
-     *
+     * 两种查询方式：
+     *  1. 数据库查询
+     *  2. 内存查询
      * @param tagNameList
      * @return
      */
@@ -185,17 +192,67 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         if (CollectionUtils.isEmpty(tagNameList)) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
+
+        // 1. 查询所有用户
+        QueryWrapper<User> queryWrapper = new QueryWrapper();
+        List<User> userList = userMapper.selectList(queryWrapper);
+        Gson gson = new Gson();
+        // 2. 在内存中判断是否包含要求的标签
+        // 并发流：改stream为parallelStream；缺点：需要线程池
+        return userList.stream()
+                .filter(user -> {
+                    String tagStr = user.getTags();
+                    // 所有数据库取出来的值都需要进行校验
+                    if (StringUtils.isEmpty(tagStr)) {
+                        return false;
+                    }
+
+                    try {
+                        Set<String> userTags = gson.fromJson(tagStr, new TypeToken<Set<String>>() {}.getType());
+                        return userTags != null && userTags.stream().anyMatch(tagNameList::contains);
+                    } catch (Exception e) {
+                        return false;
+                    }
+                })
+                .map(this::getSafetyUser)
+                .collect(Collectors.toList());
+
+//        log.info("memory query time" + (System.currentTimeMillis() - startTime));
+//
+//
+//        startTime = System.currentTimeMillis();
+//        queryWrapper = new QueryWrapper<>();
+//         链接 and 查询
+//         like '$$'
+
+//        for (String tagName : tagNameList) {
+//            queryWrapper = queryWrapper.like("tags", tagName);
+//        }
+//        userList = userMapper.selectList(queryWrapper);
+//        log.info("sql query time" + (System.currentTimeMillis() - startTime));
+
+//        return userList;
+//         return userList.stream().map(this::getSafetyUser).collect(Collectors.toList());
+
+    }
+
+    @Deprecated
+    private List<User> searchUserByTagsBySQL(List<String> tagNameList) {
+        if (CollectionUtils.isEmpty(tagNameList)) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        // 标签 and 查询
-        // like '$$'
+//         链接 and 查询
+//         like '$$'
+
         for (String tagName : tagNameList) {
             queryWrapper = queryWrapper.like("tags", tagName);
         }
         List<User> userList = userMapper.selectList(queryWrapper);
 
         return userList.stream().map(this::getSafetyUser).collect(Collectors.toList());
-
     }
+
 
 
 }
