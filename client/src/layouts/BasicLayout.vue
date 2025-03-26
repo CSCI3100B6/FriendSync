@@ -1,6 +1,6 @@
 <template>
   <div class="basic-layout">
-    <van-nav-bar title="标题" left-arrow @click-left="onClickLeft">
+    <van-nav-bar title="FriendSync" left-arrow @click-left="onClickLeft">
       <template #right>
         <van-icon name="search" size="20" @click="onClickRight" />
       </template>
@@ -21,9 +21,15 @@
 
 <script setup>
 import { Toast } from 'vant';
+import {useRouter} from "vue-router";
 
-const onClickLeft = () => Toast('返回');
-const onClickRight = () => Toast('搜索');
+const router = useRouter()
+const onClickLeft = () => {
+  router.push('/')
+}
+const onClickRight = () => {
+  router.push('/search')
+}
 </script>
 
 <style scoped>
