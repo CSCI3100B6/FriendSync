@@ -1,12 +1,8 @@
 package com.friendsync.muush.controller;
 
-import java.net.http.HttpResponse;
 import java.util.List;
 
-import org.springframework.boot.autoconfigure.jms.JmsProperties.Listener.Session;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.friendsync.muush.repo.ChatMessage;
 import com.friendsync.muush.repo.TDO.GetMessageRequest;
+import com.friendsync.muush.repo.TDO.SendMessageRequest;
 import com.friendsync.muush.service.impl.ChatMessageServiceImpl;
 
 import jakarta.annotation.Resource;
@@ -50,8 +47,18 @@ public class ChatMessageController {
     }
     
     @PostMapping("/send")
-    public String sendMsg(HttpServletRequest request /* msgDTO Session */ ) {
-        // TODO:
-        return new String();
+    public ResponseEntity<?> sendMsg(
+        HttpServletRequest request,
+        @RequestBody SendMessageRequest sendMessageRequest) {
+        HttpSession session = request.getSession();
+        if (session != null && session.getAttribute(USER_LOGIN_STATE) != null) {
+            ChatMessage msg = new ChatMessage();
+            msg.setConversationId(sendMessageRequest.getConversationId());
+            msg.setSenderId(sendMessageRequest.getUserId());
+            msg.setMsgContent(sendMessageRequest.getContent());
+            msgService.addMessage(msg);
+        }
+        
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("login first");
     }
 }

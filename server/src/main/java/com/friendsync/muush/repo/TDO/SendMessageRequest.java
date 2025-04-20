@@ -5,8 +5,8 @@ import java.io.Serializable;
 import lombok.Data;
 
 @Data
-public class GetMessageRequest implements Serializable {
+public class SendMessageRequest implements Serializable {
     Long conversationId;
-    Integer offset;
-    Integer num;
+    Long userId;
+    String content;
 }
