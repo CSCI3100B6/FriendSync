@@ -1,5 +1,7 @@
 package com.friendsync.muush.controller;
 
+import static com.friendsync.stevenpang.constant.UserConstant.USER_LOGIN_STATE;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,12 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.friendsync.muush.repo.Conversation;
 import com.friendsync.muush.repo.TDO.CreateConversationRequest;
 import com.friendsync.muush.service.ConversationService;
+import com.friendsync.stevenpang.constant.UserConstant;
+import com.friendsync.stevenpang.model.User;
 
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-
-import static com.friendsync.stevenpang.constant.UserConstant.USER_LOGIN_STATE;
 
 @RestController
 @RequestMapping("/conversation")
@@ -49,7 +51,7 @@ public class ConversationController {
         if (session == null || session.getAttribute(USER_LOGIN_STATE) == null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("login first");
         Conversation c = service.createConversation(
-            createConversationRequest.getOwnerId(),
+            (User) session.getAttribute(USER_LOGIN_STATE),
             createConversationRequest.getInformation(),
             createConversationRequest.getType());
         if (c != null)
@@ -67,7 +69,7 @@ public class ConversationController {
         HttpSession session = request.getSession();
         if (session == null || session.getAttribute(USER_LOGIN_STATE) == null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("login first");
-        String s = service.generateLicense(id, owner);
+        String s = service.generateLicense(id, (User) session.getAttribute(USER_LOGIN_STATE));
         if (s != null)
             return ResponseEntity.ok(s);
         else
@@ -82,9 +84,8 @@ public class ConversationController {
         HttpSession session = request.getSession();
         if (session == null || session.getAttribute(USER_LOGIN_STATE) == null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("login first");
-        
-        
-        return ResponseEntity.ok(service.getOwnConversations(owner));
+
+        return ResponseEntity.ok(service.getOwnConversations((User) session.getAttribute(USER_LOGIN_STATE)));
     }
 
     @GetMapping("/delete")
@@ -96,10 +97,23 @@ public class ConversationController {
         HttpSession session = request.getSession();
         if (session == null || session.getAttribute(USER_LOGIN_STATE) == null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("login first");
-        boolean result = service.deleteConversation(id, owner);
+        boolean result = service.deleteConversation(id, (User) session.getAttribute(USER_LOGIN_STATE));
         if (result)
             return ResponseEntity.ok("success");
         else
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("failed");
     }
+
+    @GetMapping("/all")
+    public ResponseEntity<?> getAllConversation(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        if (session != null)
+        {
+            User user = (User) session.getAttribute(USER_LOGIN_STATE);
+            if (user.getUserRole() == UserConstant.ADMIN_ROLE)
+                return ResponseEntity.ok(service.getAllConversation());
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("not admin");
+    }
+    
 }

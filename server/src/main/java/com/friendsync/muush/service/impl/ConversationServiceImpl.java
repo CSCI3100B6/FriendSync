@@ -15,6 +15,8 @@ import com.friendsync.muush.mapper.ConversationMapper;
 import com.friendsync.muush.repo.Conversation;
 import com.friendsync.muush.repo.Conversation.ConversationType;
 import com.friendsync.muush.service.ConversationService;
+import com.friendsync.stevenpang.constant.UserConstant;
+import com.friendsync.stevenpang.model.User;
 
 @Service
 @Slf4j
@@ -31,9 +33,9 @@ public class ConversationServiceImpl extends ServiceImpl<ConversationMapper, Con
     }
 
     @Override
-    public Conversation createConversation(Long owner, String info, ConversationType type) {
+    public Conversation createConversation(User owner, String info, ConversationType type) {
         Conversation newOne = new Conversation();
-        newOne.setOwnerId(owner);
+        newOne.setOwnerId(owner.getId());
         newOne.setInformation(info);
         newOne.setType(type);
         conversationMapper.insert(newOne);
@@ -41,9 +43,9 @@ public class ConversationServiceImpl extends ServiceImpl<ConversationMapper, Con
     }
 
     @Override
-    public String generateLicense(Long conversationId, Long ownerId) {
+    public String generateLicense(Long conversationId, User owner) {
         Conversation c = conversationMapper.selectById(conversationId);
-        if (c.getOwnerId() == ownerId) {
+        if (c.getOwnerId() == owner.getId() || owner.getUserRole() == UserConstant.ADMIN_ROLE) {
             String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
             SecureRandom random = new SecureRandom();
             StringBuilder key = new StringBuilder();
@@ -59,18 +61,25 @@ public class ConversationServiceImpl extends ServiceImpl<ConversationMapper, Con
     }
 
     @Override
-    public List<Conversation> getOwnConversations(Long ownerId) {
+    public List<Conversation> getOwnConversations(User owner) {
         List<Conversation> list = conversationMapper.selectList(
-            new QueryWrapper<Conversation>().eq("owner_id", ownerId)
+            new QueryWrapper<Conversation>().eq("owner_id", owner)
         );
         return list;
     }
 
     @Override
-    public boolean deleteConversation(Long conversationId, Long ownerId) {
+    public boolean deleteConversation(Long conversationId, User owner) {
         Conversation c = conversationMapper.selectById(conversationId);
-        if (c.getOwnerId() == ownerId)
+        if (c.getOwnerId() == owner.getId() || owner.getUserRole() == UserConstant.ADMIN_ROLE) {
             conversationMapper.deleteById(c);
-        return c.getOwnerId() == ownerId;
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public List<Conversation> getAllConversation() {
+        return conversationMapper.selectList(null);
     }
 }
