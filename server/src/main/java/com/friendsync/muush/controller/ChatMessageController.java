@@ -13,8 +13,6 @@ import com.friendsync.muush.repo.ChatMessage;
 import com.friendsync.muush.repo.TDO.GetMessageRequest;
 import com.friendsync.muush.repo.TDO.SendMessageRequest;
 import com.friendsync.muush.service.impl.ChatMessageServiceImpl;
-import com.friendsync.stevenpang.constant.UserConstant;
-import com.friendsync.stevenpang.model.User;
 
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;

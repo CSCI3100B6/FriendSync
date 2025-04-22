@@ -38,7 +38,7 @@ public class ConversationController {
     @GetMapping("/search")
     public ResponseEntity<?> searchConversation(
         HttpServletRequest request,
-        @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword) {
+        @RequestParam(value = "keyword", required = true, defaultValue = "") String keyword) {
             HttpSession session = request.getSession();
             if (session == null || session.getAttribute(USER_LOGIN_STATE) == null)
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("login first");

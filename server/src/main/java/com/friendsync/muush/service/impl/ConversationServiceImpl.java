@@ -27,7 +27,9 @@ public class ConversationServiceImpl extends ServiceImpl<ConversationMapper, Con
     @Override
     public List<Conversation> searchConversations(String s) {
         Wrapper<Conversation> wrapper = new QueryWrapper<Conversation>()
-            .like("information", s);
+            .like("information", s)
+            .or()
+            .like("name", s);
         List<Conversation> list = conversationMapper.selectList(wrapper);
         return list;
     }
