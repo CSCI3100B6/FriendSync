@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.friendsync.muush.repo.Conversation;
+import com.friendsync.stevenpang.model.User;
 
 import jakarta.annotation.Resource;
 
@@ -28,19 +29,30 @@ public class ConversationServiceTest {
 
     @Test
     public void addConversation() {
-        conversationService.createConversation(0L, "test 0", Conversation.ConversationType.CHAT);
-        conversationService.createConversation(1L, "test 1", Conversation.ConversationType.TEAM);
-        conversationService.createConversation(2L, "test 2", Conversation.ConversationType.ROOM);
+        User owner = new User();
+        owner.setId(1L);
+        conversationService.createConversation(owner, "test 0", "info abc", Conversation.ConversationType.CHAT);
+        conversationService.createConversation(owner, "test 1", "info ccb", Conversation.ConversationType.TEAM);
+        owner.setId(2L);
+        conversationService.createConversation(owner, "test 2", "info bin", Conversation.ConversationType.ROOM);
     }
 
     @Test
     public void testGenerateLicense() {
-        String lic = conversationService.generateLicense(1L, 0L);
+        User owner = new User();
+        owner.setId(1L);
+        String lic = conversationService.generateLicense(1L, owner);
         System.out.println(lic);
     }
 
     @Test
     public void testGetOwn() {
-        System.out.println(conversationService.getOwnConversations(1L).size());
+        User owner = new User();
+        owner.setId(1L);
+        System.out.println(conversationService.getOwnConversations(owner).size());
     }
+
+    // TODO: test delete
+
+    // TODO: test get all
 }
