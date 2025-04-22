@@ -24,6 +24,9 @@ public class Conversation implements Serializable {
     @TableField("owner_id")
     private Long ownerId;
 
+    @TableField("name")
+    private String name;
+
     @TableField("information")
     private String information;
 

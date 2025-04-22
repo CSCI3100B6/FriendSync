@@ -12,10 +12,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.friendsync.muush.repo.Conversation;
-import com.friendsync.muush.repo.TDO.CreateConversationRequest;
+import com.friendsync.muush.repo.Conversation.ConversationType;
+import com.friendsync.muush.repo.TDO.CreateChatRequest;
+import com.friendsync.muush.repo.TDO.CreateTeamRoomRequest;
 import com.friendsync.muush.service.ConversationService;
+import com.friendsync.muush.service.UserConversationService;
 import com.friendsync.stevenpang.constant.UserConstant;
 import com.friendsync.stevenpang.model.User;
+import com.friendsync.stevenpang.service.UserService;
 
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,6 +30,10 @@ import jakarta.servlet.http.HttpSession;
 public class ConversationController {
     @Resource
     private ConversationService service;
+    @Resource
+    private UserService userService;
+    @Resource
+    private UserConversationService userConversationService;
 
     @GetMapping("/search")
     public ResponseEntity<?> searchConversation(
@@ -42,23 +50,53 @@ public class ConversationController {
             }
         }
     
-    @PostMapping("/create")
-    public ResponseEntity<?> createConversation(
+    @PostMapping("/create-team-room")
+    public ResponseEntity<?> createTeamRoom(
         HttpServletRequest request,
-        @RequestBody CreateConversationRequest createConversationRequest
+        @RequestBody CreateTeamRoomRequest createConversationRequest
     ) {
         HttpSession session = request.getSession();
         if (session == null || session.getAttribute(USER_LOGIN_STATE) == null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("login first");
+        else if (createConversationRequest.getType() == ConversationType.CHAT)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("wrong conversation type");
+        User user = (User) session.getAttribute(USER_LOGIN_STATE);
         Conversation c = service.createConversation(
-            (User) session.getAttribute(USER_LOGIN_STATE),
+            user,
+            createConversationRequest.getName(),
             createConversationRequest.getInformation(),
             createConversationRequest.getType());
-        if (c != null)
-            return ResponseEntity.ok(c);
-        else
+        if (c == null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("failed");
+        userConversationService.join(user.getId(), c.getId());
+        return ResponseEntity.ok(c);
     }
+
+    @PostMapping("/create-chat")
+    public ResponseEntity<?> createChat(
+        HttpServletRequest request,
+        @RequestBody CreateChatRequest createChatRequest
+    ) {
+        HttpSession session = request.getSession();
+        if (session == null || session.getAttribute(USER_LOGIN_STATE) == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("login first");
+        if (createChatRequest.getOwnerId() == createChatRequest.getOthersId())
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("cannot chat with self");
+        User user = (User) session.getAttribute(USER_LOGIN_STATE);
+        String othersName = userService.getById(createChatRequest.getOthersId()).getUsername();
+        Conversation c = service.createConversation(
+            user,
+            othersName,
+            "Chat with " + othersName,
+            ConversationType.CHAT);
+        
+        if (c == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("failed");
+        userConversationService.join(user.getId(), c.getId());
+        userConversationService.join(createChatRequest.getOthersId(), c.getId());
+        return ResponseEntity.ok(c);
+    }
+    
 
     @GetMapping("/generate")
     public ResponseEntity<?> genLicense(

@@ -33,9 +33,10 @@ public class ConversationServiceImpl extends ServiceImpl<ConversationMapper, Con
     }
 
     @Override
-    public Conversation createConversation(User owner, String info, ConversationType type) {
+    public Conversation createConversation(User owner, String name, String info, ConversationType type) {
         Conversation newOne = new Conversation();
         newOne.setOwnerId(owner.getId());
+        newOne.setName(name);
         newOne.setInformation(info);
         newOne.setType(type);
         conversationMapper.insert(newOne);
