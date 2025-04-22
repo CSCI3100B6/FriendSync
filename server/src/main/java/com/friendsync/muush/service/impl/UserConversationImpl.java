@@ -1,6 +1,7 @@
 package com.friendsync.muush.service.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -29,12 +30,14 @@ public class UserConversationImpl extends ServiceImpl<UserConversationMapper, Us
     public List<Conversation> getJoinedConversation(Long userId) {
         Wrapper<UserConversation> wrapper = new QueryWrapper<UserConversation>()
             .eq("user_id", userId);
-        List<UserConversation> list = mapper.selectList(wrapper);
-        List<Long> idList = new ArrayList<>(list.size());
-        for (int i = 0; i < idList.size(); i++) {
-            idList.set(i, list.get(i).getId());
+        List<UserConversation> arr = mapper.selectList(wrapper);
+        ArrayList<Long> ids = new ArrayList<Long>();
+        for (UserConversation uc : arr) {
+            ids.add(uc.getConversationId());
         }
-        return conversationMapper.selectByIds(idList);
+        if (ids.isEmpty())
+            return Arrays.asList();
+        return conversationMapper.selectByIds(ids);
     }
 
     @Override
@@ -49,7 +52,7 @@ public class UserConversationImpl extends ServiceImpl<UserConversationMapper, Us
     @Override
     public Conversation joinWithLicense(Long userId, Long ConversationId, String license) {
         Conversation c = conversationMapper.selectById(ConversationId);
-        if (c.getLicense() != license)
+        if (!c.getLicense().equals(license))
             return null;
         UserConversation newOne = new UserConversation();
         newOne.setUserId(userId);
