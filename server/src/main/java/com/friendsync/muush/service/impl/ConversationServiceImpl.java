@@ -66,7 +66,7 @@ public class ConversationServiceImpl extends ServiceImpl<ConversationMapper, Con
     @Override
     public List<Conversation> getOwnConversations(User owner) {
         List<Conversation> list = conversationMapper.selectList(
-            new QueryWrapper<Conversation>().eq("owner_id", owner)
+            new QueryWrapper<Conversation>().eq("owner_id", owner.getId())
         );
         return list;
     }

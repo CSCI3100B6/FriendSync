@@ -20,7 +20,7 @@ public class ConversationServiceTest {
 
     @Test
     public void testSearch() {
-        List<Conversation> l = conversationService.searchConversations("1");
+        List<Conversation> l = conversationService.searchConversations("est");
         System.out.println(l.size());
         for (Conversation conversation : l) {
             System.out.println(conversation.getInformation());
@@ -41,7 +41,7 @@ public class ConversationServiceTest {
     public void testGenerateLicense() {
         User owner = new User();
         owner.setId(1L);
-        String lic = conversationService.generateLicense(1L, owner);
+        String lic = conversationService.generateLicense(5L, owner);
         System.out.println(lic);
     }
 
@@ -52,7 +52,15 @@ public class ConversationServiceTest {
         System.out.println(conversationService.getOwnConversations(owner).size());
     }
 
-    // TODO: test delete
+    @Test
+    public void testDelete() {
+        User owner = new User();
+        owner.setId(1L);
+        assert(conversationService.deleteConversation(4L, owner));
+    }
 
-    // TODO: test get all
+    @Test
+    public void testGetAll() {
+        System.out.println(conversationService.getAllConversation().size());
+    }
 }
