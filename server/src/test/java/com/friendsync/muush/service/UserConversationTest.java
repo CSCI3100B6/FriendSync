@@ -58,4 +58,14 @@ public class UserConversationTest {
         for (Conversation cc : list)
             System.out.println(cc.getName());
     }
+
+    @Test
+    public void leave() {
+        User user = new User();
+        user.setId(0L);
+        Conversation c;
+        c = conversationService.createConversation(user, "test1", "", ConversationType.CHAT);
+        service.join(user.getId(), c.getId());
+        System.out.println(service.leave(user.getId(), c.getId()));
+    }
 }

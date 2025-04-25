@@ -58,4 +58,19 @@ public class UserConversationController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("wrong license");
         return ResponseEntity.ok(result);
     }
+
+    @GetMapping("/leave")
+    public ResponseEntity<?> leave(
+        HttpServletRequest request,
+        @RequestParam(value = "id", required = true, defaultValue = "") Long id) {
+        HttpSession session = request.getSession();
+        if (session == null || session.getAttribute(USER_LOGIN_STATE) == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("login first");
+        User user = (User) session.getAttribute(USER_LOGIN_STATE);
+        boolean success = service.leave(user.getId(), id);
+        if (success)
+            return ResponseEntity.ok("success");
+        else
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("not in the conversation");
+    }
 }

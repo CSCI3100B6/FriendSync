@@ -2,7 +2,9 @@ package com.friendsync.muush.service.impl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -59,6 +61,14 @@ public class UserConversationImpl extends ServiceImpl<UserConversationMapper, Us
         newOne.setConversationId(ConversationId);
         mapper.insert(newOne);
         return c;
+    }
+
+    @Override
+    public Boolean leave(Long userId, Long ConversationId) {
+        Map<String, Object> columnMap = new HashMap<>();
+        columnMap.put("user_id", userId);
+        columnMap.put("conversation_id", ConversationId);
+        return mapper.deleteByMap(columnMap) > 0;
     }
 
 }
