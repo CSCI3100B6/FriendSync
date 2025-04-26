@@ -94,6 +94,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         user.setUserAccount(userAccount);
         user.setUserPassword(encryptPassword);
         user.setPlanetCode(planetCode);
+        user.setIsDelete(0);
         boolean saveResult = this.save(user);
         if (!saveResult) {
             return -1;
@@ -130,7 +131,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         User user = userMapper.selectOne(queryWrapper);
         //  用户不存在
         if (user == null) {
-            log.info("User login failed, userAccount connot match userPassword");
+            log.info("User login failed, userAccount cannot match userPassword");
             throw new BusinessException(ErrorCode.USER_NOT_EXIST, "用户不存在");
         }
         //  3. 用户脱敏
