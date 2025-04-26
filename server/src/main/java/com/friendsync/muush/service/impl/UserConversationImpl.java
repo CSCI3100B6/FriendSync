@@ -43,22 +43,34 @@ public class UserConversationImpl extends ServiceImpl<UserConversationMapper, Us
     }
 
     @Override
-    public Conversation join(Long userId, Long ConversationId) {
+    public Conversation join(Long userId, Long conversationId) {
+        QueryWrapper<UserConversation> wrapper = new QueryWrapper<UserConversation>()
+            .eq("conversation_id", conversationId)
+            .eq("user_Id", userId);
+        if (this.exists(wrapper))
+            return conversationMapper.selectById(conversationId);
+        
         UserConversation newOne = new UserConversation();
         newOne.setUserId(userId);
-        newOne.setConversationId(ConversationId);
+        newOne.setConversationId(conversationId);
         mapper.insert(newOne);
-        return conversationMapper.selectById(ConversationId);
+        return conversationMapper.selectById(conversationId);
     }
 
     @Override
-    public Conversation joinWithLicense(Long userId, Long ConversationId, String license) {
-        Conversation c = conversationMapper.selectById(ConversationId);
+    public Conversation joinWithLicense(Long userId, Long conversationId, String license) {
+        Conversation c = conversationMapper.selectById(conversationId);
+        QueryWrapper<UserConversation> wrapper = new QueryWrapper<UserConversation>()
+            .eq("conversation_id", conversationId)
+            .eq("user_Id", userId);
+        if (this.exists(wrapper))
+            return c;
+
         if (!c.getLicense().equals(license))
             return null;
         UserConversation newOne = new UserConversation();
         newOne.setUserId(userId);
-        newOne.setConversationId(ConversationId);
+        newOne.setConversationId(conversationId);
         mapper.insert(newOne);
         return c;
     }

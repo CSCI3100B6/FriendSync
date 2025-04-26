@@ -331,3 +331,104 @@ HttpStatus.BAD_REQUEST 400:
 HttpStatus.OK 200:
   - `List<Conversation>` if success
 **The current user should be the Admin.**
+
+---
+
+## User conversation API
+
+path: `localhost:8088/api/user-conversation`
+
+
+### Get joined conversation
+path: `localhost:8088/api/user-conversation/joined`
+method: GET
+request parameters: not needed
+return body:
+HttpStatus.BAD_REQUEST 400:
+  - `String "login first"` if not login
+HttpStatus.OK 200:
+  - `List<Conversation>` if success
+
+### Join room
+path: `localhost:8088/api/user-conversation/join-room`
+method: GET
+request parameters: `id` the room id
+return body:
+HttpStatus.BAD_REQUEST 400:
+  - `String "login first"` if not login
+HttpStatus.OK 200:
+  - `Conversation` the room conversation object if success
+
+### Join team
+path: `localhost:8088/api/user-conversation/join-team`
+method: GET
+request parameters:
+  - `id` the team id
+  - `license` the license
+return body:
+HttpStatus.BAD_REQUEST 400:
+  - `String "login first"` if not login
+  - `String "wrong license"` if the license is wrong
+HttpStatus.OK 200:
+  - `Conversation` the room conversation object if success
+
+### Leave
+path: `localhost:8088/api/user-conversation/leave`
+method: GET
+request parameters:
+  - `id` the conversation id
+return body:
+HttpStatus.BAD_REQUEST 400:
+  - `String "login first"` if not login
+  - `String "not in the conversation"` if not in the conversation
+HttpStatus.OK 200:
+  - `String "success"` the room conversation object if success
+
+---
+
+## Chat message API
+
+path: `localhost:8088/api/message`
+
+### Get message
+path: `localhost:8088/api/message/get`
+method: POST
+request body:
+``` java
+public class GetMessageRequest implements Serializable {
+    Long conversationId;
+    Integer offset;
+    Integer num;
+}
+```
+return body:
+HttpStatus.BAD_REQUEST 400:
+  - `String "login first"` if not login
+HttpStatus.OK 200:
+  - `List<ChatMessage>` if success
+``` java
+public class ChatMessage implements Serializable {
+    private Long id;
+    private Long conversationId;
+    private Long senderId;
+    private Timestamp sendTime;
+    private String msgContent;
+}
+```
+
+### Send message
+path: `localhost:8088/api/message/send`
+method: POST
+request body:
+``` java
+public class SendMessageRequest implements Serializable {
+    Long conversationId;
+    Long userId;
+    String content;
+}
+```
+return body:
+HttpStatus.BAD_REQUEST 400:
+  - `String "login first"` if not login
+HttpStatus.OK 200:
+  - `String "success"` if success
