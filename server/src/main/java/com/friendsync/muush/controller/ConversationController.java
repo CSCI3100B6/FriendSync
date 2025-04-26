@@ -2,6 +2,9 @@ package com.friendsync.muush.controller;
 
 import static com.friendsync.stevenpang.constant.UserConstant.USER_LOGIN_STATE;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,7 +49,7 @@ public class ConversationController {
             if (!keyword.equals("")) {
                 return ResponseEntity.status(HttpStatus.OK).body(service.searchConversations(keyword));
             } else {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("need GET param keyword"); 
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("need GET param: keyword"); 
             }
         }
     
@@ -101,8 +104,7 @@ public class ConversationController {
     @GetMapping("/generate")
     public ResponseEntity<?> genLicense(
         HttpServletRequest request,
-        @RequestParam(value = "id") Long id,
-        @RequestParam(value = "owner") Long owner
+        @RequestParam(value = "id") Long id
     ) {
         HttpSession session = request.getSession();
         if (session == null || session.getAttribute(USER_LOGIN_STATE) == null)
@@ -116,8 +118,7 @@ public class ConversationController {
 
     @GetMapping("/getown")
     public ResponseEntity<?> getOwn(
-        HttpServletRequest request,
-        @RequestParam("owner") Long owner
+        HttpServletRequest request
     ) {
         HttpSession session = request.getSession();
         if (session == null || session.getAttribute(USER_LOGIN_STATE) == null)
@@ -129,15 +130,18 @@ public class ConversationController {
     @GetMapping("/delete")
     public ResponseEntity<?> delete(   
         HttpServletRequest request,
-        @RequestParam("id") Long id,
-        @RequestParam("owner") Long owner
+        @RequestParam("id") Long id
      ) {
         HttpSession session = request.getSession();
         if (session == null || session.getAttribute(USER_LOGIN_STATE) == null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("login first");
         boolean result = service.deleteConversation(id, (User) session.getAttribute(USER_LOGIN_STATE));
-        if (result)
+        if (result) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("conversation_id", id);
+            userConversationService.removeByMap(map);
             return ResponseEntity.ok("success");
+        }
         else
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("failed");
     }
@@ -145,6 +149,8 @@ public class ConversationController {
     @GetMapping("/all")
     public ResponseEntity<?> getAllConversation(HttpServletRequest request) {
         HttpSession session = request.getSession();
+        if (session == null || session.getAttribute(USER_LOGIN_STATE) == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("login first");
         if (session != null)
         {
             User user = (User) session.getAttribute(USER_LOGIN_STATE);
