@@ -66,6 +66,9 @@ public class UserConversationTest {
         Conversation c;
         c = conversationService.createConversation(user, "test1", "", ConversationType.CHAT);
         service.join(user.getId(), c.getId());
-        System.out.println(service.leave(user.getId(), c.getId()));
+        user.setId(1L);
+        service.join(user.getId(), c.getId());
+        System.out.println(service.leave(0L, c.getId(), 1L));
+        System.out.println(service.leave(1L, c.getId(), null));
     }
 }

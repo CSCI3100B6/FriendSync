@@ -76,11 +76,35 @@ public class UserConversationImpl extends ServiceImpl<UserConversationMapper, Us
     }
 
     @Override
-    public Boolean leave(Long userId, Long ConversationId) {
+    public Boolean leave(Long userId, Long conversationId, Long newOwner) {
+        Conversation c = conversationMapper.selectById(conversationId);
+        boolean isOwner = c.getOwnerId() == userId;
+
+        // change owner
+        long cnt = mapper.selectCount(new QueryWrapper<UserConversation>().eq("conversation_id", conversationId));
+        if (isOwner && cnt > 1) {
+            Map<String, Object> columnMap = new HashMap<>();
+            columnMap.put("user_id", newOwner);
+            columnMap.put("conversation_id", conversationId);
+            boolean validNewOwner = mapper.selectByMap(columnMap) != null;
+            if (!validNewOwner || newOwner == userId)
+                return false;
+            c.setOwnerId(newOwner);
+            conversationMapper.updateById(c);
+        }
+
         Map<String, Object> columnMap = new HashMap<>();
         columnMap.put("user_id", userId);
-        columnMap.put("conversation_id", ConversationId);
-        return mapper.deleteByMap(columnMap) > 0;
+        columnMap.put("conversation_id", conversationId);
+        mapper.deleteByMap(columnMap);
+        
+        // delete the conversation if is the last person
+        cnt = mapper.selectCount(new QueryWrapper<UserConversation>().eq("conversation_id", conversationId));
+        if (cnt == 0) {
+            conversationMapper.deleteById(conversationId);
+        }
+
+        return true;
     }
 
 }

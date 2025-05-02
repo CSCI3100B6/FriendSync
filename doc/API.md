@@ -377,10 +377,11 @@ path: `localhost:8088/api/user-conversation/leave`
 method: GET
 request parameters:
   - `id` the conversation id
+  - `new_owner` the new owner id (not required if the user is not the owner)
 return body:
 HttpStatus.BAD_REQUEST 400:
   - `String "login first"` if not login
-  - `String "not in the conversation"` if not in the conversation
+  - `String "user or new owner not in the conversation"` if not in the conversation
 HttpStatus.OK 200:
   - `String "success"` the room conversation object if success
 

@@ -12,7 +12,9 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.friendsync.muush.mapper.ConversationMapper;
+import com.friendsync.muush.mapper.UserConversationMapper;
 import com.friendsync.muush.repo.Conversation;
+import com.friendsync.muush.repo.UserConversation;
 import com.friendsync.muush.repo.Conversation.ConversationType;
 import com.friendsync.muush.service.ConversationService;
 import com.friendsync.stevenpang.constant.UserConstant;
@@ -23,6 +25,8 @@ import com.friendsync.stevenpang.model.User;
 public class ConversationServiceImpl extends ServiceImpl<ConversationMapper, Conversation> implements ConversationService {
     @Resource
     private ConversationMapper conversationMapper;
+    @Resource
+    private UserConversationMapper userConversationMapper;
     
     @Override
     public List<Conversation> searchConversations(String s) {
@@ -76,6 +80,8 @@ public class ConversationServiceImpl extends ServiceImpl<ConversationMapper, Con
         Conversation c = conversationMapper.selectById(conversationId);
         if (c.getOwnerId() == owner.getId() || owner.getUserRole() == UserConstant.ADMIN_ROLE) {
             conversationMapper.deleteById(c);
+            Wrapper<UserConversation> wrapper = new QueryWrapper<UserConversation>().eq("conversation_id", conversationId);
+            userConversationMapper.delete(wrapper);
             return true;
         }
         return false;

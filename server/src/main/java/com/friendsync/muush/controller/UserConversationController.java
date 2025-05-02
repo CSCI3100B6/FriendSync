@@ -62,15 +62,16 @@ public class UserConversationController {
     @GetMapping("/leave")
     public ResponseEntity<?> leave(
         HttpServletRequest request,
-        @RequestParam(value = "id", required = true, defaultValue = "") Long id) {
+        @RequestParam(value = "id", required = true, defaultValue = "") Long id,
+        @RequestParam(value = "new_owner", required = false, defaultValue = "") Long newOwner) {
         HttpSession session = request.getSession();
         if (session == null || session.getAttribute(USER_LOGIN_STATE) == null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("login first");
         User user = (User) session.getAttribute(USER_LOGIN_STATE);
-        boolean success = service.leave(user.getId(), id);
+        boolean success = service.leave(user.getId(), id, newOwner);
         if (success)
             return ResponseEntity.ok("success");
         else
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("not in the conversation");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("user or new owner not in the conversation");
     }
 }
