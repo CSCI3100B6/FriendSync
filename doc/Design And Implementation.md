@@ -239,7 +239,7 @@ It is used for third-party login.
 
 > Below is a high-level design covering **communication, function inputs/outputs, exceptions, and security**.
 
-## 1. Internal and External Component Communication
+## Internal and External Component Communication
 
 ### Communication Flow
 
@@ -250,7 +250,7 @@ It is used for third-party login.
 
 <img title="" src="./pics/ssdrawio.drawio.png" alt="" data-align="center">
 
-## 2. Expected Function Inputs and Outputs
+## Expected Function Inputs and Outputs
 
 Below are key API endpoints, expected inputs, and outputs.
 
@@ -258,11 +258,11 @@ The api root url is `localhost:8088/api`. It can be changed by the `src/main/res
 
 ---
 
-## user API
+### user API
 
 path: `localhost:8088/api/user`
 
-### Register
+#### Register
 
 path: `localhost:8088/api/user/register`
 method: POST
@@ -289,7 +289,7 @@ public class BaseResponse<T> implements Serializable {
   - -1 if failed
   - user id if success
 
-### Login
+#### Login
 
 path: `localhost:8088/api/user/login`
 method: POST
@@ -335,7 +335,7 @@ public class User implements Serializable {
 ```
 after login, session will have a new attribute: `"userLoginState": User object`
 
-### Logout
+#### Logout
 
 path: `localhost:8088/api/user/register`
 method: POST
@@ -353,7 +353,7 @@ public class BaseResponse<T> implements Serializable {
   - 1
 Will remove the `"userLoginState"` attribute of the session.
 
-### Get current user
+#### Get current user
 
 path: `localhost:8088/api/user/current`
 method: GET
@@ -370,7 +370,7 @@ public class BaseResponse<T> implements Serializable {
   data:
   - User object
 
-### Search
+#### Search
 
 path: `localhost:8088/api/user/search`
 method: GET
@@ -387,7 +387,7 @@ public class BaseResponse<T> implements Serializable {
   data:
   - `List<User>`
 
-### Delete
+#### Delete
 
 path: `localhost:8088/api/user/current`
 method: POST
@@ -408,11 +408,11 @@ public class BaseResponse<T> implements Serializable {
 
 ---
 
-## Conversation API
+### Conversation API
 
 path: `localhost:8088/api/conversation`
 
-### Search
+#### Search
 
 path: `localhost:8088/api/conversation/search`
 method: GET
@@ -435,7 +435,7 @@ public class Conversation implements Serializable {
 }
 ```
 
-### Create team or room
+#### Create team or room
 
 path: `localhost:8088/api/conversation/create-team-room`
 method: POST
@@ -457,7 +457,7 @@ HttpStatus.OK 200:
   - `Conversation` object if success
 **License will be empty after create. If you want to join a team by license, need to generate one first.**
 
-### Create Chat
+#### Create Chat
 
 path: `localhost:8088/api/conversation/create-chat`
 method: POST
@@ -477,7 +477,7 @@ HttpStatus.OK 200:
   - `Conversation` object if success
 **OwnerId should be same as current user's id.**
 
-### Generate License
+#### Generate License
 
 path: `localhost:8088/api/conversation/generate`
 method: GET
@@ -491,7 +491,7 @@ HttpStatus.OK 200:
   - `String` the license if success
 **The current user should be the owner of the team or the Admin.**
 
-### Get the conversations own
+#### Get the conversations own
 
 path: `localhost:8088/api/conversation/getown`
 method: GET
@@ -502,7 +502,7 @@ HttpStatus.BAD_REQUEST 400:
 HttpStatus.OK 200:
   - `List<Conversation` the list of the conversation the current user own
 
-### Delete conversation
+#### Delete conversation
 
 path: `localhost:8088/api/conversation/delete`
 method: GET
@@ -516,7 +516,7 @@ HttpStatus.OK 200:
   - `String "success"` if success
 **The current user should be the owner of the team or the Admin.**
 
-### Get all conversations
+#### Get all conversations
 
 path: `localhost:8088/api/conversation/all`
 method: GET
@@ -531,12 +531,12 @@ HttpStatus.OK 200:
 
 ---
 
-## User conversation API
+### User conversation API
 
 path: `localhost:8088/api/user-conversation`
 
 
-### Get joined conversation
+#### Get joined conversation
 path: `localhost:8088/api/user-conversation/joined`
 method: GET
 request parameters: not needed
@@ -546,7 +546,7 @@ HttpStatus.BAD_REQUEST 400:
 HttpStatus.OK 200:
   - `List<Conversation>` if success
 
-### Join room
+#### Join room
 path: `localhost:8088/api/user-conversation/join-room`
 method: GET
 request parameters: `id` the room id
@@ -556,7 +556,7 @@ HttpStatus.BAD_REQUEST 400:
 HttpStatus.OK 200:
   - `Conversation` the room conversation object if success
 
-### Join team
+#### Join team
 path: `localhost:8088/api/user-conversation/join-team`
 method: GET
 request parameters:
@@ -569,7 +569,7 @@ HttpStatus.BAD_REQUEST 400:
 HttpStatus.OK 200:
   - `Conversation` the room conversation object if success
 
-### Leave
+#### Leave
 path: `localhost:8088/api/user-conversation/leave`
 method: GET
 request parameters:
@@ -584,11 +584,11 @@ HttpStatus.OK 200:
 
 ---
 
-## Chat message API
+### Chat message API
 
 path: `localhost:8088/api/message`
 
-### Get message
+#### Get message
 path: `localhost:8088/api/message/get`
 method: POST
 request body:
@@ -614,7 +614,7 @@ public class ChatMessage implements Serializable {
 }
 ```
 
-### Send message
+#### Send message
 path: `localhost:8088/api/message/send`
 method: POST
 request body:
@@ -631,7 +631,7 @@ HttpStatus.BAD_REQUEST 400:
 HttpStatus.OK 200:
   - `String "success"` if success
 
-## 3. Communication Protocols
+### Communication Protocols
 
 The system communicates via REST API using HTTP/HTTPS.
 
@@ -639,34 +639,20 @@ The system communicates via REST API using HTTP/HTTPS.
 | -------------------------------- | -------------------------- | ------------------------------------- |
 | **Frontend ↔ Backend**           | REST API (HTTP/HTTPS)      | Vue sends API requests to Spring Boot |
 | **Backend ↔ Database (MySQL)**   | JDBC (MyBatis)             | SQL queries for persistent storage    |
-| **Backend ↔ Redis**              | Redis Protocol             | Caching user search results           |
-| **Backend ↔ Swagger (API Docs)** | OpenAPI (Knife4j)          | API documentation                     |
 
 API secured via HTTPS for encrypted communication.
 
-## 4. Expected Exceptions and How They Are Handled
-
-| **Exception**           | **Cause**                     | **HTTP Status Code** | **Error Message**                          |
-| ----------------------- | ----------------------------- | -------------------- | ------------------------------------------ |
-| `USER_NOT_FOUND`        | User ID does not exist        | `40001 NULL_ERROR`   | `{ "error": "User not found" }`            |
-| `INVALID_TAG_FORMAT`    | Malformed tags                | `40000 PARAMS_ERROR` | `{ "error": "Invalid tag format" }`        |
-| `TEAM_FULL`             | Team reached max members      | `40301 FORBIDDEN`    | `{ "error": "Team is full" }`              |
-| `UNAUTHORIZED_ACCESS`   | No JWT token or invalid token | `40100 NOT_LOGIN`    | `{ "error": "Unauthorized" }`              |
-| `NO_PERMISSION`         | User has no permission        | `40101 NO_AUTH`      | `{ "error": "User has no permission" }`    |
-| `DUPLICATE_TEAM_JOIN`   | User already in team          | `40000 PARAMS_ERROR` | `{ "error": "User already in the team" }`  |
-| `INTERNAL_SERVER_ERROR` | Unknown server error          | `50000 SYSTEM_ERROR` | `{ "error": "Unexpected error occurred" }` |
-
-## 5. Security Measures
+### Security Measures
 
 Security is enforced at multiple levels.
 
-## Authentication
+#### Authentication
 
 - JWT (JSON Web Token) for user authentication.
 
 - Token passed in `Authorization` header.
   
-  ### Authorization
+  ##### Authorization
 
 - Role-Based Access Control (RBAC):
   
@@ -674,13 +660,13 @@ Security is enforced at multiple levels.
   
   - Only team members can chat within a team.
   
-  ### Data Protection
+  ##### Data Protection
 
 - User passwords hashed using BCrypt.
 
 - Redis Cache Expiry to prevent stale data.
   
-  ### Preventing API Abuse
+  ##### Preventing API Abuse
 
 - Rate limiting (limit search requests per minute).
 
@@ -688,19 +674,17 @@ Security is enforced at multiple levels.
 
 - Example Rate Limiting (Spring Boot):
   
-  ### Secure Data Transmission
+  ##### Secure Data Transmission
 
 - All API requests use HTTPS.
 
 - CORS policies prevent unauthorized cross-origin requests.
 
----
-
-## User Interface Design
+### User Interface Design
 
 **FriendSync** is a mobile HTML5 website designed to help users find like-minded individuals for collaboration based on shared interests and learning goals. This part outlines the **user interface (UI) design**, **site map**, **accessibility design** and **storyboard** for the FriendSync platform.
 
-### Site Map
+## Site Map
 
 The platform's organization and navigation pathways are outlined in the site map. Below is the hierarchical arrangement showing how different sections connect and how users move between interfaces throughout the system.
 
