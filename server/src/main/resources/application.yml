@@ -3,10 +3,13 @@ spring:
     name: server
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/friendsync
-    username: B6
+    url: jdbc:mysql://localhost:3306/steven_universe
+    #url: jdbc:mysql://localhost:3306/friendsync
+    username: root
+    #B6
     # password maybe changed
-    password: csci3100
+    password: B6
+    #cici3100
   # session 失效时间
   session:
     timeout: 86400
