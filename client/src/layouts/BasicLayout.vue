@@ -33,6 +33,7 @@ const onClickRight = () => {
 </script>
 
 <style scoped>
+
 .van-nav-bar {
   position: fixed;
   top: 0;
@@ -43,10 +44,11 @@ const onClickRight = () => {
 
 .content {
   padding-top: 46px;
-  padding-bottom: 50px; /* 避免内容被底部栏遮挡 */
+  padding-bottom: 50px;
 }
 
 .basic-layout {
   min-height: 100vh;
 }
+
 </style>

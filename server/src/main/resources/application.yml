@@ -10,12 +10,30 @@ spring:
   # session 失效时间
   session:
     timeout: 86400
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  profiles:
+    active: dev
   jpa:
     # show sql instructions on debug console
     show-sql: true
     # auto update database table structure
     hibernate:
       ddl-auto: update
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password:
+      database: 0
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
+
+
 server:
   port: 8088
   servlet:
@@ -30,5 +48,18 @@ mybatis-plus:
       logic-delete-value: 1 # 逻辑已删除值
       logic-not-delete-value: 0 # 逻辑未删除值
 
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+
+knife4j:
+  enable: true
+  # 自定义文档信息（可选）
+  setting:
+    language: zh-CN
+    title: Knife4j 接口文档
 
 

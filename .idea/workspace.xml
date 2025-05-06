@@ -5,7 +5,60 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e9757b75-315d-46f7-819d-2782a59fc4c2" name="更改" comment="">
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/models/user.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/pages/UserEditPage.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/com/friendsync/stevenpang/MyApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/com/friendsync/stevenpang/common/DeleteRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/com/friendsync/stevenpang/common/PageRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/com/friendsync/stevenpang/config/MybatisPlusConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/com/friendsync/stevenpang/config/RedissonConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/com/friendsync/stevenpang/controller/TeamController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/com/friendsync/stevenpang/job/PreCacheJob.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/com/friendsync/stevenpang/mapper/TeamMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/com/friendsync/stevenpang/mapper/UserTeamMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/com/friendsync/stevenpang/model/domain/Team.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/com/friendsync/stevenpang/model/domain/UserTeam.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/com/friendsync/stevenpang/model/dto/TeamQuery.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/com/friendsync/stevenpang/model/enums/TeamStatusEnum.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/com/friendsync/stevenpang/model/enums/request/TeamAddRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/com/friendsync/stevenpang/model/enums/request/TeamJoinRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/com/friendsync/stevenpang/model/enums/request/TeamQuitRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/com/friendsync/stevenpang/model/enums/request/TeamUpdateRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/com/friendsync/stevenpang/model/vo/TeamUserVO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/com/friendsync/stevenpang/model/vo/UserVO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/com/friendsync/stevenpang/service/TeamService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/com/friendsync/stevenpang/service/UserTeamService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/com/friendsync/stevenpang/service/impl/TeamServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/com/friendsync/stevenpang/service/impl/UserTeamServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/com/friendsync/stevenpang/utils/AlgorithmUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/resources/mapper/TeamMapper.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/resources/mapper/UserTeamMapper.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/test/java/com/friendsync/server/AlgorithmUtilsTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/test/java/com/friendsync/server/InsertUsersTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/test/java/com/friendsync/server/MyApplicationTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/test/java/com/friendsync/server/RedisTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/test/java/com/friendsync/server/RedissonTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/components.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/components.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/node_modules/.vite/deps/_metadata.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/node_modules/.vite/deps/_metadata.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/App.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/config/route.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/config/route.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/layouts/BasicLayout.vue" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/layouts/BasicLayout.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/Search.vue" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/Search.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/User.vue" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/User.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/server/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/friendsync/stevenpang/UserCenterApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/friendsync/stevenpang/UserCenterApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/friendsync/stevenpang/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/friendsync/stevenpang/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/friendsync/stevenpang/mapper/UserMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/friendsync/stevenpang/mapper/UserMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/friendsync/stevenpang/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/friendsync/stevenpang/model/domain/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/friendsync/stevenpang/model/request/UserLoginRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/friendsync/stevenpang/model/enums/request/UserLoginRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/friendsync/stevenpang/model/request/UserRegisterRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/friendsync/stevenpang/model/enums/request/UserRegisterRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/friendsync/stevenpang/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/friendsync/stevenpang/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/friendsync/stevenpang/service/impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/friendsync/stevenpang/service/impl/UserServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/resources/mapper/UserMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/resources/mapper/UserMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/test/java/com/friendsync/stevenpang/UserCenterApplicationTests.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/test/java/com/friendsync/stevenpang/service/UserServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/java/com/friendsync/server/UserServiceTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,39 +98,39 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "last_opened_file_path": "C:/Users/lenovo/IdeaProjects/user_center/server",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "模块",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "spring.configuration.checksum": "2cd91de9a0f1d93bffaef848def79462"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/lenovo/IdeaProjects/user_center/server&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;模块&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;spring.configuration.checksum&quot;: &quot;2cd91de9a0f1d93bffaef848def79462&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mysql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
     ],
-    "com.intellij.ide.scratch.LRUPopupBuilder$1/SQL 方言": [
-      "MySQL"
+    &quot;com.intellij.ide.scratch.LRUPopupBuilder$1/SQL 方言&quot;: [
+      &quot;MySQL&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="ReactorSettings">
     <option name="notificationShown" value="true" />
   </component>
@@ -190,6 +243,7 @@
       <workItem from="1741854756420" duration="1834000" />
       <workItem from="1741914554803" duration="2462000" />
       <workItem from="1741957364868" duration="149000" />
+      <workItem from="1746412937375" duration="386000" />
     </task>
     <servers />
   </component>

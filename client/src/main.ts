@@ -7,6 +7,7 @@ import routes from "./config/route.ts"
 import { Divider } from 'vant';
 import { Tag } from 'vant';
 import { Collapse, CollapseItem } from 'vant';
+import { Cell, CellGroup } from 'vant';
 
 const app = createApp(App)
 // 先注册 UI 组件
@@ -20,6 +21,8 @@ app.use(Divider);
 app.use(Tag);
 app.use(Collapse);
 app.use(CollapseItem);
+app.use(Cell);
+app.use(CellGroup);
 
 // 最后注册路由
 const router = createRouter({
