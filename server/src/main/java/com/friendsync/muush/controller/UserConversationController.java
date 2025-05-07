@@ -1,11 +1,11 @@
 package com.friendsync.muush.controller;
 
+import com.friendsync.stevenpang.model.domain.User;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.friendsync.muush.service.UserConversationService;
-import com.friendsync.stevenpang.model.User;
 
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;

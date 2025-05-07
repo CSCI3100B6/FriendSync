@@ -33,23 +33,23 @@ public class UserConversationImpl extends ServiceImpl<UserConversationMapper, Us
         Wrapper<UserConversation> wrapper = new QueryWrapper<UserConversation>()
             .eq("user_id", userId);
         List<UserConversation> arr = mapper.selectList(wrapper);
-        ArrayList<Long> ids = new ArrayList<Long>();
+        ArrayList<Conversation> ids = new ArrayList<Conversation>();
         for (UserConversation uc : arr) {
-            ids.add(uc.getConversationId());
+            ids.add(conversationMapper.selectById(uc.getConversationId()));
         }
         if (ids.isEmpty())
             return Arrays.asList();
-        return conversationMapper.selectByIds(ids);
+        return ids;
     }
 
     @Override
     public Conversation join(Long userId, Long conversationId) {
-        QueryWrapper<UserConversation> wrapper = new QueryWrapper<UserConversation>()
-            .eq("conversation_id", conversationId)
-            .eq("user_Id", userId);
-        if (this.exists(wrapper))
-            return conversationMapper.selectById(conversationId);
-        
+        QueryWrapper<UserConversation> wrapper = new QueryWrapper<>();
+        wrapper.eq("conversation_id", conversationId);
+        wrapper.eq("user_Id", userId);
+        UserConversation userConversation = mapper.selectOne(wrapper);
+        if (userConversation != null)   return conversationMapper.selectById(conversationId);
+
         UserConversation newOne = new UserConversation();
         newOne.setUserId(userId);
         newOne.setConversationId(conversationId);
@@ -60,14 +60,14 @@ public class UserConversationImpl extends ServiceImpl<UserConversationMapper, Us
     @Override
     public Conversation joinWithLicense(Long userId, Long conversationId, String license) {
         Conversation c = conversationMapper.selectById(conversationId);
-        QueryWrapper<UserConversation> wrapper = new QueryWrapper<UserConversation>()
-            .eq("conversation_id", conversationId)
-            .eq("user_Id", userId);
-        if (this.exists(wrapper))
-            return c;
+        QueryWrapper<UserConversation> wrapper = new QueryWrapper<>();
 
-        if (!c.getLicense().equals(license))
-            return null;
+        wrapper.eq("conversation_id", conversationId);
+        wrapper.eq("user_Id", userId);
+        UserConversation userConversation = mapper.selectOne(wrapper);
+        if (userConversation != null)   return c;
+        if (!c.getLicense().equals(license))    return null;
+
         UserConversation newOne = new UserConversation();
         newOne.setUserId(userId);
         newOne.setConversationId(conversationId);

@@ -5,6 +5,7 @@ import static com.friendsync.stevenpang.constant.UserConstant.USER_LOGIN_STATE;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.friendsync.stevenpang.model.domain.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +22,6 @@ import com.friendsync.muush.repo.TDO.CreateTeamRoomRequest;
 import com.friendsync.muush.service.ConversationService;
 import com.friendsync.muush.service.UserConversationService;
 import com.friendsync.stevenpang.constant.UserConstant;
-import com.friendsync.stevenpang.model.User;
 import com.friendsync.stevenpang.service.UserService;
 
 import jakarta.annotation.Resource;

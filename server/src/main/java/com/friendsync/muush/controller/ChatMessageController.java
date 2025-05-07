@@ -2,6 +2,7 @@ package com.friendsync.muush.controller;
 
 import java.util.List;
 
+import com.friendsync.stevenpang.model.domain.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +18,6 @@ import com.friendsync.muush.repo.TDO.SendMessageRequest;
 import com.friendsync.muush.service.ChatMessageService;
 import com.friendsync.muush.service.UserConversationService;
 import com.friendsync.stevenpang.constant.UserConstant;
-import com.friendsync.stevenpang.model.User;
 import com.friendsync.stevenpang.service.UserService;
 
 import jakarta.annotation.Resource;
@@ -44,10 +44,12 @@ public class ChatMessageController {
             return false;
         if (user.getUserRole() == UserConstant.ADMIN_ROLE)
             return true;
-        QueryWrapper<UserConversation> wrapper = new QueryWrapper<UserConversation>()
-            .eq("conversation_id", conversationId)
-            .eq("user_Id", userId);
-        return userConversationService.exists(wrapper);
+        boolean isMember = userConversationService.count(
+                new QueryWrapper<UserConversation>()
+                        .eq("conversation_id", conversationId)
+                        .eq("user_id", userId)  // 确保字段名与数据库一致
+        ) > 0;
+        return isMember;
     }
 
     @PostMapping("/get")

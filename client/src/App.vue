@@ -9,6 +9,7 @@ import BasicLayout from './layouts/BasicLayout.vue';
 
 
 <style scoped>
+
 van-nav-bar {
   width: 100%;
   box-sizing: border-box;

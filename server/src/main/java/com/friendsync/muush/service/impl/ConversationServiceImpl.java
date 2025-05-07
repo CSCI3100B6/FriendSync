@@ -3,6 +3,7 @@ package com.friendsync.muush.service.impl;
 import java.security.SecureRandom;
 import java.util.List;
 
+import com.friendsync.stevenpang.model.domain.User;
 import org.springframework.stereotype.Service;
 
 import jakarta.annotation.Resource;
@@ -18,7 +19,6 @@ import com.friendsync.muush.repo.UserConversation;
 import com.friendsync.muush.repo.Conversation.ConversationType;
 import com.friendsync.muush.service.ConversationService;
 import com.friendsync.stevenpang.constant.UserConstant;
-import com.friendsync.stevenpang.model.User;
 
 @Service
 @Slf4j

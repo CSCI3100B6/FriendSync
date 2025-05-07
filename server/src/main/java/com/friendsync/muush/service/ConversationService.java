@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.friendsync.muush.repo.Conversation;
-import com.friendsync.stevenpang.model.User;
+import com.friendsync.stevenpang.model.domain.User;
 
 public interface ConversationService extends IService<Conversation> {
     public List<Conversation> searchConversations(String s);
