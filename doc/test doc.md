@@ -1,28 +1,52 @@
 # FriendSync Test Document
 
- 
-
-This is the test document of the product FriendSync. This is a Client-Server architecture software. We divide the testing into two parts, front-end testing and back-end testing.
+ This comprehensive testing document outlines the procedures and objectives for testing the FriendSync product, a software application based on a Client-Server architecture. The testing process is divided into two main sections: front-end testing and back-end testing. Both sections aim to ensure the system's robustness, performance, and functionality.
 
 ## Test Scope and Objectives
 
 ### Backend
 
-​    For the back-end testing, we use the testing method integrated in the Spring Boot Framework. The test code is mainly focused on the service running correctly.
+The back-end testing focuses on validating the services' correct operation within the Spring Boot Framework. The test codes are designed to ascertain that each service performs as expected.
 
 ### Frontend
 
-​    For the front-end testing, we use the lighthouse to measure the performance of the front-end website.
+The front-end testing employs Lighthouse to evaluate the website's performance, including metrics such as load times, interactivity, and accessibility.
 
  
 
 ## Test Cases
 
-### Front-end
+### Back-end Unit Test
+
+All the test cases are written by java code, including 
 
 #### User Service Test
 
 Test the user service, which is for the user register, login and so on.
+
+#### Add / Update User
+
+Steps: Input all the information of the user
+
+Excepted result: new data is added into the database.
+
+Pass/Fail criteria: the boolean value returned from the function.
+
+#### Register user
+
+Steps: Input all the information of the user
+
+Excepted result: new user is registered and new data is added into the database if the user name and password are valid. Otherwise reject to register.
+
+Pass/Fail criteria: the int value returned from the function.
+
+#### Search users by tags
+
+Steps: Input the tags of the users
+
+Excepted result: return the user list
+
+Pass/Fail criteria: the list content is expected.
 
 ```java
 @SpringBootTest
@@ -117,6 +141,46 @@ public class UserServiceTest {
 
 Test the conversion service, which is for the conversion creation, deletion and management.
 
+#### Search conversation
+
+Steps: Input the search key words
+
+Excepted result: return the conversation list
+
+Pass/Fail criteria: the list content is expected.
+
+#### Add conversation
+
+Steps: Input the conversation name, information and type.
+
+Excepted result: new data is added to the database.
+
+Pass/Fail criteria: the data base content is expected.
+
+#### Generate license
+
+Steps: input the owner id and conversation id
+
+Excepted result: new license
+
+Pass/Fail criteria: the license is new and consistent with the license in the database.
+
+#### Delete conversation
+
+Steps: input the owner id and conversation id
+
+Excepted result: the conversation data is removed from the data table
+
+Pass/Fail criteria: the boolean return from the function is true.
+
+#### Get own conversation
+
+Steps: call the service function
+
+Excepted result: the list of the all conversation
+
+Pass/Fail criteria: the size of the return list is as same as the database
+
 ```java
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -175,6 +239,38 @@ public class ConversationServiceTest {
 #### User Conversation Test
 
 Test the user conversion service, which is for the user-conversation relation management.
+
+#### Get joined conversation
+
+Steps: input the user id
+
+Excepted result: the conversations that the user have joined
+
+Pass/Fail criteria: the list content is expected.
+
+#### Join conversation
+
+Steps: input the user id and conversation id.
+
+Excepted result: new data is added to the database table
+
+Pass/Fail criteria: database content is expected.
+
+#### Join with license
+
+Steps: input the user id, conversation id and license.
+
+Excepted result: new data is added to the database table
+
+Pass/Fail criteria: database content is expected.
+
+#### Leave conversation
+
+Steps: input the user id, conversation id and new owner id.
+
+Excepted result: new data is added to the database table, the conversation owner is updated if the leaving user is the original owner.
+
+Pass/Fail criteria: database content is expected.
 
 ```java
 @RunWith(SpringRunner.class)
@@ -244,6 +340,30 @@ public class UserConversationTest {
 
 Test the chat message service, which is for the message sending logics.
 
+#### Add Message
+
+Steps: input the conversation id, sender id, send time, message content.
+
+Excepted result: new data is added to the database table
+
+Pass/Fail criteria: the function return int one.
+
+#### Get Message
+
+Steps: input the conversation id, offset and numbers.
+
+Excepted result: the list of the message.
+
+Pass/Fail criteria: the list is expected.
+
+#### Delete Message
+
+Steps: input the conversation id
+
+Excepted result: the message data is deleted from the database
+
+Pass/Fail criteria: the function returns int one.
+
 ```java
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -295,21 +415,35 @@ public class ChatMessageServiceTest {
 
 
 
- 
+## Test Platform
+
+### Development Environment
+
+We use the IDEA and VSCode to develop the back-end and front-end.
+
+### Testing Environment
+
+System: Windows
+
+Java version: 17
+
+Web browser: Chrome
+
+
 
 ## Team Roles and Responsibilities
 
-XXX is for the back-end testing and debugging.
+WU Xuanwei and PANG Jia is for the back-end testing and debugging.
 
-XXX is for the front-end testing and debugging.
+WONG Cheuk Lam and ZHU Kevin is for the front-end testing and debugging.
 
  
 
 ## Test Approach
 
-The back-end is using the unit testing. We test different services individually.
+Back-end testing utilizes unit testing to isolate and test each service independently.
 
-The front-end is using the integrated testing. We measure the front-end overall performance.
+Front-end testing employs integrated testing to measure overall performance and user experience.
 
  
 
