@@ -1,37 +1,74 @@
-import { createApp } from "vue";
-import "./style.css";
-import "./assets/form.css";
-import App from "./App.vue";
-import {
+/* eslint-disable */
+// @ts-ignore
+import { createApp } from 'vue'
+// @ts-ignore
+import { createPinia } from 'pinia'
+// 引入Vant組件庫
+import { 
   Button,
-  NavBar,
-  Icon,
-  Tabbar,
-  TabbarItem,
-  Toast,
   Form,
   Field,
   CellGroup,
-} from "vant";
-import router from "./router";
+  NavBar,
+  Toast,
+  Dialog,
+  Icon,
+  Tabbar,
+  TabbarItem,
+  Cell,
+  Search,
+  Tab,
+  Tabs,
+  Swipe,
+  SwipeItem,
+  ActionBar,
+  ActionBarButton,
+  Badge,
+  Empty,
+  NoticeBar,
+  Loading,
+  Popover,
+  Image as VanImage,
+  PullRefresh
+} from 'vant'
+// 引入Vant樣式
+import 'vant/lib/index.css'
+// 移動端適配
+import './assets/mobile.css'
 
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { faUserFriends } from "@fortawesome/free-solid-svg-icons";
+import App from './App.vue'
+import router from './router'
 
-library.add(faUserFriends);
+const app = createApp(App)
 
-const app = createApp(App);
-app.component("font-awesome-icon", FontAwesomeIcon);
+app.use(createPinia())
+app.use(router)
 
-app.use(Button);
-app.use(NavBar);
-app.use(Icon);
-app.use(Tabbar);
-app.use(TabbarItem);
-app.use(Toast);
-app.use(Form);
-app.use(Field);
-app.use(CellGroup);
-app.use(router);
-app.mount("#app");
+// 註冊Vant組件
+app.use(Button)
+app.use(Form)
+app.use(Field)
+app.use(CellGroup)
+app.use(NavBar)
+app.use(Toast)
+app.use(Dialog)
+app.use(Icon)
+app.use(Tabbar)
+app.use(TabbarItem)
+app.use(Cell)
+app.use(Search)
+app.use(Tab)
+app.use(Tabs)
+app.use(Swipe)
+app.use(SwipeItem)
+app.use(ActionBar)
+app.use(ActionBarButton)
+app.use(Badge)
+app.use(Empty)
+app.use(NoticeBar)
+app.use(Loading)
+app.use(Popover)
+app.use(VanImage)
+app.use(PullRefresh)
+
+app.mount('#app')

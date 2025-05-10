@@ -1,0 +1,71 @@
+/* 移動端適配基礎樣式 */
+html {
+  font-size: 16px; /* 基礎字體大小 */
+  touch-action: manipulation; /* 優化觸摸事件 */
+  -webkit-text-size-adjust: 100%; /* 禁止文本大小自動調整 */
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0); /* 點擊高亮透明 */
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, 
+               Segoe UI, Arial, Roboto, 'PingFang SC', 'miui', 'Hiragino Sans GB', 
+               'Microsoft Yahei', sans-serif;
+  min-height: 100vh;
+  background-color: #f7f8fa;
+  color: #323233;
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 移除iOS表單元素的陰影 */
+input, textarea {
+  -webkit-appearance: none;
+}
+
+/* 禁用長按菜單 */
+a, img, button {
+  -webkit-touch-callout: none;
+}
+
+/* 去掉點擊元素時出現的高亮框 */
+a, button, input, textarea {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  outline: none;
+}
+
+/* 修正點擊灰色背景的問題 */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* 禁止用户選擇文本 */
+.no-select {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* 安全區適配 */
+.safe-area-inset-bottom {
+  padding-bottom: constant(safe-area-inset-bottom);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* 完全展示內容，即使屏幕過小 */
+.overflow-auto {
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 修復iOS滾動回彈效果 */
+.scroll-fix {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 禁止滾動傳播 */
+.stop-propagation {
+  overscroll-behavior: contain;
+} 
