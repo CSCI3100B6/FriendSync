@@ -8,9 +8,50 @@
 
 The back-end testing focuses on validating the services' correct operation within the Spring Boot Framework. The test codes are designed to ascertain that each service performs as expected.
 
+#### Scope:
+
+1. User Service
+2. Conversation Service
+3. User Conversation Service
+4. Chat Message Service
+
 ### Frontend
 
-The front-end testing employs Lighthouse to evaluate the website's performance, including metrics such as load times, interactivity, and accessibility.
+Vue unit test tool is used to check the front-end logic. The front-end testing also employs Lighthouse to evaluate the website's performance, including metrics such as load times, interactivity, and accessibility.
+
+#### Scope
+
+##### Authentication
+
+- Login
+- Registration
+- Logout functionality
+
+##### User Management
+
+- User Profile
+- User Edit Page
+
+##### Navigation
+
+- Basic Layout
+- Tab Bar Navigation
+
+##### Search Functionality
+
+- Tag-based search
+- User recommendations
+
+##### Team s Room Management
+
+- Team listing
+- Team creation
+- Team joining/leaving
+
+##### Conversation Features
+
+- Chat interface
+- Message sending/receiving
 
  
 
@@ -24,7 +65,7 @@ All the test cases are written by java code, including
 
 Test the user service, which is for the user register, login and so on.
 
-#### Add / Update User
+##### Add / Update User
 
 Steps: Input all the information of the user
 
@@ -32,7 +73,7 @@ Excepted result: new data is added into the database.
 
 Pass/Fail criteria: the boolean value returned from the function.
 
-#### Register user
+##### Register user
 
 Steps: Input all the information of the user
 
@@ -40,7 +81,7 @@ Excepted result: new user is registered and new data is added into the database 
 
 Pass/Fail criteria: the int value returned from the function.
 
-#### Search users by tags
+##### Search users by tags
 
 Steps: Input the tags of the users
 
@@ -48,100 +89,11 @@ Excepted result: return the user list
 
 Pass/Fail criteria: the list content is expected.
 
-```java
-@SpringBootTest
-public class UserServiceTest {
-
-    @Resource
-    private UserService userService;
-
-    @Test
-    public void testAddUser() {
-        User user = new User();
-        user.setUsername("test");
-        user.setUserAccount("123");
-        user.setAvatarUrl("https://636f-codenav-8grj8px727565176-1256524210.tcb.qcloud.la/img/logo.png");
-        user.setGender(0);
-        user.setUserPassword("xxx");
-        user.setPhone("123");
-        user.setEmail("456");
-        boolean result = userService.save(user);
-        System.out.println(user.getId());
-        Assertions.assertTrue(result);
-    }
-
-    @Test
-    public void testUpdateUser() {
-        User user = new User();
-        user.setId(1L);
-        user.setUsername("dogYupi");
-        user.setUserAccount("123");
-        user.setAvatarUrl("https://636f-codenav-8grj8px727565176-1256524210.tcb.qcloud.la/img/logo.png");
-        user.setGender(0);
-        user.setUserPassword("xxx");
-        user.setPhone("123");
-        user.setEmail("456");
-        boolean result = userService.updateById(user);
-        Assertions.assertTrue(result);
-    }
-
-    @Test
-    public void testDeleteUser() {
-        boolean result = userService.removeById(1L);
-        Assertions.assertTrue(result);
-    }
-
-    @Test
-    public void testGetUser() {
-        User user = userService.getById(1L);
-        Assertions.assertNotNull(user);
-    }
-
-    @Test
-    void userRegister() {
-        String userAccount = "yupi";
-        String userPassword = "12345678";
-        String checkPassword = "12345678";
-        String planetCode = "1";
-        long result = userService.userRegister(userAccount, userPassword, checkPassword, planetCode);
-        Assertions.assertEquals(-1, result);
-        userAccount = "yu";
-        result = userService.userRegister(userAccount, userPassword, checkPassword, planetCode);
-        Assertions.assertEquals(-1, result);
-        userAccount = "yupi";
-        userPassword = "123456";
-        result = userService.userRegister(userAccount, userPassword, checkPassword, planetCode);
-        Assertions.assertEquals(-1, result);
-        userAccount = "yu pi";
-        userPassword = "12345678";
-        result = userService.userRegister(userAccount, userPassword, checkPassword, planetCode);
-        Assertions.assertEquals(-1, result);
-        checkPassword = "123456789";
-        result = userService.userRegister(userAccount, userPassword, checkPassword, planetCode);
-        Assertions.assertEquals(-1, result);
-        userAccount = "dogYupi";
-        checkPassword = "12345678";
-        result = userService.userRegister(userAccount, userPassword, checkPassword, planetCode);
-        Assertions.assertEquals(-1, result);
-        userAccount = "yupi";
-        result = userService.userRegister(userAccount, userPassword, checkPassword, planetCode);
-        Assertions.assertEquals(-1, result);
-    }
-
-    @Test
-    public void testSearchUsersByTags() {
-        List<String> tagNameList = Arrays.asList("java", "python");
-        List<User> userList = userService.searchUsersByTags(tagNameList);
-        Assert.assertNotNull(userList);
-    }
-}
-```
-
 #### Conversation Service Test
 
 Test the conversion service, which is for the conversion creation, deletion and management.
 
-#### Search conversation
+##### Search conversation
 
 Steps: Input the search key words
 
@@ -149,7 +101,7 @@ Excepted result: return the conversation list
 
 Pass/Fail criteria: the list content is expected.
 
-#### Add conversation
+##### Add conversation
 
 Steps: Input the conversation name, information and type.
 
@@ -157,7 +109,7 @@ Excepted result: new data is added to the database.
 
 Pass/Fail criteria: the data base content is expected.
 
-#### Generate license
+##### Generate license
 
 Steps: input the owner id and conversation id
 
@@ -165,7 +117,7 @@ Excepted result: new license
 
 Pass/Fail criteria: the license is new and consistent with the license in the database.
 
-#### Delete conversation
+##### Delete conversation
 
 Steps: input the owner id and conversation id
 
@@ -173,7 +125,7 @@ Excepted result: the conversation data is removed from the data table
 
 Pass/Fail criteria: the boolean return from the function is true.
 
-#### Get own conversation
+##### Get own conversation
 
 Steps: call the service function
 
@@ -181,66 +133,11 @@ Excepted result: the list of the all conversation
 
 Pass/Fail criteria: the size of the return list is as same as the database
 
-```java
-@RunWith(SpringRunner.class)
-@SpringBootTest
-public class ConversationServiceTest {
-    @Resource
-    private ConversationService conversationService;
-
-    @Test
-    public void testSearch() {
-        List<Conversation> l = conversationService.searchConversations("est");
-        System.out.println(l.size());
-        for (Conversation conversation : l) {
-            System.out.println(conversation.getInformation());
-        }
-    }
-
-    @Test
-    public void addConversation() {
-        User owner = new User();
-        owner.setId(1L);
-        conversationService.createConversation(owner, "test 0", "info abc", Conversation.ConversationType.CHAT);
-        conversationService.createConversation(owner, "test 1", "info ccb", Conversation.ConversationType.TEAM);
-        owner.setId(2L);
-        conversationService.createConversation(owner, "test 2", "info bin", Conversation.ConversationType.ROOM);
-    }
-
-    @Test
-    public void testGenerateLicense() {
-        User owner = new User();
-        owner.setId(1L);
-        String lic = conversationService.generateLicense(5L, owner);
-        System.out.println(lic);
-    }
-
-    @Test
-    public void testGetOwn() {
-        User owner = new User();
-        owner.setId(1L);
-        System.out.println(conversationService.getOwnConversations(owner).size());
-    }
-
-    @Test
-    public void testDelete() {
-        User owner = new User();
-        owner.setId(1L);
-        assert(conversationService.deleteConversation(4L, owner));
-    }
-
-    @Test
-    public void testGetAll() {
-        System.out.println(conversationService.getAllConversation().size());
-    }
-}
-```
-
 #### User Conversation Test
 
 Test the user conversion service, which is for the user-conversation relation management.
 
-#### Get joined conversation
+##### Get joined conversation
 
 Steps: input the user id
 
@@ -248,7 +145,7 @@ Excepted result: the conversations that the user have joined
 
 Pass/Fail criteria: the list content is expected.
 
-#### Join conversation
+##### Join conversation
 
 Steps: input the user id and conversation id.
 
@@ -256,7 +153,7 @@ Excepted result: new data is added to the database table
 
 Pass/Fail criteria: database content is expected.
 
-#### Join with license
+##### Join with license
 
 Steps: input the user id, conversation id and license.
 
@@ -264,7 +161,7 @@ Excepted result: new data is added to the database table
 
 Pass/Fail criteria: database content is expected.
 
-#### Leave conversation
+##### Leave conversation
 
 Steps: input the user id, conversation id and new owner id.
 
@@ -272,75 +169,12 @@ Excepted result: new data is added to the database table, the conversation owner
 
 Pass/Fail criteria: database content is expected.
 
-```java
-@RunWith(SpringRunner.class)
-@SpringBootTest
-public class UserConversationTest {
-    @Resource
-    UserConversationService service;
-    @Resource
-    ConversationService conversationService;
-
-    @Test
-    public void testGetJoined() {
-        User user = new User();
-        user.setId(0L);
-        List<Conversation> list = service.getJoinedConversation(0L);
-        for (Conversation c : list)
-            System.out.println(c.getName());
-    }
-
-    @Test
-    public void testJoin() {
-        User user = new User();
-        user.setId(0L);
-        Conversation c;
-        c = conversationService.createConversation(user, "test1", "", ConversationType.CHAT);
-        service.join(user.getId(), c.getId());
-        c = conversationService.createConversation(user, "test2", "", ConversationType.ROOM);
-        service.join(user.getId(), c.getId());
-        c = conversationService.createConversation(user, "test3", "", ConversationType.TEAM);
-        service.join(user.getId(), c.getId());
-    }
-
-    @Test
-    public void testLicense() {
-        User user = new User();
-        user.setId(0L);
-        Conversation c;
-        c = conversationService.createConversation(user, "test for license", "", ConversationType.TEAM);
-        String license = conversationService.generateLicense(c.getId(), user);
-        System.out.println(license);
-        User user2 = new User();
-        user2.setId(2L);
-        service.joinWithLicense(user2.getId(), c.getId(), license);
-        List<Conversation> list = service.getJoinedConversation(user2.getId());
-        for (Conversation cc : list)
-            System.out.println(cc.getName());
-    }
-
-    @Test
-    public void leave() {
-        User user = new User();
-        user.setId(0L);
-        Conversation c;
-        c = conversationService.createConversation(user, "test1", "", ConversationType.CHAT);
-        service.join(user.getId(), c.getId());
-        user.setId(1L);
-        service.join(user.getId(), c.getId());
-        System.out.println(service.leave(0L, c.getId(), 1L));
-        System.out.println(service.leave(1L, c.getId(), null));
-    }
-}
-```
-
-
 
 #### Chat Message Service Test
 
 Test the chat message service, which is for the message sending logics.
 
-#### Add Message
+##### Add Message
 
 Steps: input the conversation id, sender id, send time, message content.
 
@@ -348,7 +182,7 @@ Excepted result: new data is added to the database table
 
 Pass/Fail criteria: the function return int one.
 
-#### Get Message
+##### Get Message
 
 Steps: input the conversation id, offset and numbers.
 
@@ -356,7 +190,7 @@ Excepted result: the list of the message.
 
 Pass/Fail criteria: the list is expected.
 
-#### Delete Message
+##### Delete Message
 
 Steps: input the conversation id
 
@@ -364,54 +198,240 @@ Excepted result: the message data is deleted from the database
 
 Pass/Fail criteria: the function returns int one.
 
-```java
-@RunWith(SpringRunner.class)
-@SpringBootTest
-public class ChatMessageServiceTest {
+### Front-end
 
-    @Resource
-    private ChatMessageService chatMessageService;
-    
-    @Test
-    public void testAddMsg() {
-        assertNotNull(chatMessageService);
-        
-        for (int i = 0; i < 10; i++)
-        {
-            ChatMessage msg = new ChatMessage();
-            msg.setConversationId(0L);
-            msg.setSenderId((long)i * 10L);
-            msg.setSendTime(new Timestamp(System.currentTimeMillis() + i * 1000L));
-            msg.setMsgContent("test msg " + i);
+#### Authentication Tests
 
-            int rtn = chatMessageService.addMessage(msg);
-            assertEquals(1, rtn);
-        }
-    }
+##### TC-AU-001: User Registration
 
-    @Test
-    public void testGetMsg() {
-        List<ChatMessage> msgList =
-            chatMessageService.getRecentChatMessagesByConversationID(
-                0L, 0, 100);
-        System.out.println(msgList.size());
-        for (ChatMessage chatMessage : msgList) {
-            System.out.println(chatMessage.getSendTime());
-        }
-    }
+###### Test Steps:
 
-    @Test
-    public void testDeleteMsg() {
-        List<ChatMessage> msgList =
-            chatMessageService.getRecentChatMessagesByConversationID(
-                0L, 0, 5);
-        for (ChatMessage chatMessage : msgList) {
-            assertEquals(1, chatMessageService.deleteMessage(chatMessage));
-            System.out.println("delete msg: " + chatMessage.toString());
-        }
-    }
-}
-```
+Navigate to registration page
+
+Enter valid user information:
+
+User account (minimum 4 characters)
+
+Password (minimum 8 characters)
+
+Confirm password
+
+Planet code (maximum 5 characters)
+
+Click "Register" button
+
+###### Expected Result:
+
+User account created successfully
+
+User redirected to login page
+
+Appropriate success message displayed
+
+##### TC-AU-002: User Registration - Invalid Data
+
+###### Test Steps:
+
+Navigate to registration page
+
+Test with invalid inputs:
+
+User account less than 4 characters
+
+Password less than 8 characters
+
+Non-matching password confirmation
+
+Special characters in user account
+
+Click "Register" button
+
+###### Expected Result:
+
+Registration fails
+
+Appropriate validation error messages displayed
+
+User remains on the registration page
+
+##### TC-AU-003: User Login
+
+###### Test Steps:
+
+Navigate to login page
+
+Enter valid credentials
+
+Click "Login" button
+
+###### Expected Result:
+
+User successfully logs in
+
+User redirected to home page
+
+User session created
+
+##### TC-AU-004: User Logout
+
+###### Test Steps:
+
+Log in as a valid user
+
+Click on profile icon
+
+Select "Logout" option
+
+###### Expected Result:
+
+User logged out successfully
+
+User redirected to login page
+
+User session terminated
+
+#### User Profile Tests
+
+##### TC-UP-001: View User Profile
+
+###### Test Steps:
+
+Login with valid credentials
+
+Navigate to the user profile page
+
+###### Expected Result:
+
+User information displayed correctly:
+
+Username
+
+UserID
+
+Email
+
+#### TC-UP-002: Edit User Profile
+
+##### Test Steps:
+
+Login with valid credentials
+
+Navigate to the user profile page
+
+Click "Edit" button
+
+Modify user information
+
+Click "Save Changes"
+
+##### Expected Result:
+
+Changes saved successfully
+
+Updated profile information displayed
+
+Success message shown to user
+
+#### Search Functionality Tests
+
+##### TC-SE-001: Search Users by Tags
+
+###### Test Steps:
+
+Navigate to search page
+
+Enter tag name in search field
+
+Click "Search" button
+
+###### Expected Result:
+
+Users with matching tags displayed in results
+
+Appropriate message if no matches found
+
+#### Team Management Tests
+
+##### TC-TM-001: Create Team
+
+###### Test Steps:
+
+Navigate to team creation page
+
+Enter team details:
+
+Name (maximum 20 characters)
+
+Description (maximum 512 characters)
+
+Maximum number of members (1-20)
+
+Click "Create" button
+
+###### Expected Result:
+
+Team created successfully
+
+User redirected to team page
+
+Success message displayed
+
+##### TC-TM-002: Join Team
+
+###### Test Steps:
+
+Navigate to team list page
+
+Select a team to join
+
+For public teams: Click "Join Team"
+
+For secret teams: Enter password and click "Join Team"
+
+###### Expected Result:
+
+User successfully joins the team
+
+Team appears in user's joined teams list
+
+Success message displayed
+
+##### TC-TM-003: Leave Team
+
+###### Test Steps:
+
+Navigate to user's joined teams
+
+Select a team
+
+Click "Leave Team" button
+
+###### Expected Result:
+
+User successfully leaves the team
+
+Team removed from user's joined teams list
+
+Success message displayed
+
+#### Responsive Design Tests
+
+##### TC-RD-001: Mobile Responsiveness
+
+###### Test Steps:
+
+Open application on mobile devices or using device emulation
+
+Check all pages for proper rendering and functionality
+
+Test navigation, forms, and interactive elements
+
+###### Expected Result:
+
+All pages are rendered correctly on mobile devices
+
+Navigation works properly
+
 
 
 
@@ -423,11 +443,20 @@ We use the IDEA and VSCode to develop the back-end and front-end.
 
 ### Testing Environment
 
+#### Back-end
+
 System: Windows
 
 Java version: 17
 
-Web browser: Chrome
+#### Front-end
+
+- Node.js
+- npm
+- Supported browsers:
+	- Chrome (latest 2 versions)
+	- Firefox (latest 2 versions)
+	- Edge (latest 2 versions)
 
 
 
