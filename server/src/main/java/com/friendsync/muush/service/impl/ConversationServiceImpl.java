@@ -3,7 +3,7 @@ package com.friendsync.muush.service.impl;
 import java.security.SecureRandom;
 import java.util.List;
 
-import com.friendsync.stevenpang.model.domain.User;
+import com.friendsync.stevenpang.model.User;
 import org.springframework.stereotype.Service;
 
 import jakarta.annotation.Resource;
@@ -13,9 +13,7 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.friendsync.muush.mapper.ConversationMapper;
-import com.friendsync.muush.mapper.UserConversationMapper;
 import com.friendsync.muush.repo.Conversation;
-import com.friendsync.muush.repo.UserConversation;
 import com.friendsync.muush.repo.Conversation.ConversationType;
 import com.friendsync.muush.service.ConversationService;
 import com.friendsync.stevenpang.constant.UserConstant;
@@ -25,8 +23,6 @@ import com.friendsync.stevenpang.constant.UserConstant;
 public class ConversationServiceImpl extends ServiceImpl<ConversationMapper, Conversation> implements ConversationService {
     @Resource
     private ConversationMapper conversationMapper;
-    @Resource
-    private UserConversationMapper userConversationMapper;
     
     @Override
     public List<Conversation> searchConversations(String s) {
@@ -36,6 +32,18 @@ public class ConversationServiceImpl extends ServiceImpl<ConversationMapper, Con
             .like("name", s);
         List<Conversation> list = conversationMapper.selectList(wrapper);
         return list;
+    }
+
+    @Override
+    public Conversation createConversationTeam(User owner, String name, String info, ConversationType type, String license) {
+        Conversation newOne = new Conversation();
+        newOne.setOwnerId(owner.getId());
+        newOne.setName(name);
+        newOne.setInformation(info);
+        newOne.setType(type);
+        newOne.setLicense(license);
+        conversationMapper.insert(newOne);
+        return newOne;
     }
 
     @Override
@@ -52,7 +60,7 @@ public class ConversationServiceImpl extends ServiceImpl<ConversationMapper, Con
     @Override
     public String generateLicense(Long conversationId, User owner) {
         Conversation c = conversationMapper.selectById(conversationId);
-        if (c.getOwnerId() == owner.getId() || owner.getUserRole() == UserConstant.ADMIN_ROLE) {
+        if (c.getOwnerId() == owner.getId()) {
             String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
             SecureRandom random = new SecureRandom();
             StringBuilder key = new StringBuilder();
@@ -78,10 +86,8 @@ public class ConversationServiceImpl extends ServiceImpl<ConversationMapper, Con
     @Override
     public boolean deleteConversation(Long conversationId, User owner) {
         Conversation c = conversationMapper.selectById(conversationId);
-        if (c.getOwnerId() == owner.getId() || owner.getUserRole() == UserConstant.ADMIN_ROLE) {
+        if (c.getOwnerId() == owner.getId()) {
             conversationMapper.deleteById(c);
-            Wrapper<UserConversation> wrapper = new QueryWrapper<UserConversation>().eq("conversation_id", conversationId);
-            userConversationMapper.delete(wrapper);
             return true;
         }
         return false;
@@ -91,4 +97,6 @@ public class ConversationServiceImpl extends ServiceImpl<ConversationMapper, Con
     public List<Conversation> getAllConversation() {
         return conversationMapper.selectList(null);
     }
+
+
 }

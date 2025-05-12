@@ -1,11 +1,7 @@
 <template>
   <div class="search-results-container">
     <div class="header">
-      <van-nav-bar 
-        title="搜索結果" 
-        left-arrow 
-        @click-left="goBack"
-      />
+      <van-nav-bar title="搜索結果" left-arrow @click-left="goBack" />
     </div>
 
     <div class="search-conditions">
@@ -16,8 +12,8 @@
       <div class="condition-item" v-if="tagList.length > 0">
         <span class="label">標籤：</span>
         <div class="tag-list">
-          <van-tag 
-            v-for="tag in tagList" 
+          <van-tag
+            v-for="tag in tagList"
             :key="tag"
             type="primary"
             plain
@@ -41,13 +37,26 @@
       </div>
 
       <div v-else class="user-list">
-        <div v-for="user in searchResults" :key="user.id" class="user-card" @click="viewUserProfile(user)">
+        <div
+          v-for="user in searchResults"
+          :key="user.id"
+          class="user-card"
+          @click="viewUserProfile(user)"
+        >
           <div class="user-avatar">
-            <img :src="user.avatarUrl || 'https://img01.yzcdn.cn/vant/cat.jpeg'" :alt="user.username || user.userAccount">
+            <img
+              :src="
+                user.avatarUrl ||
+                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStmeAfZR3Qcxz2bdr35DgXK8sehEeern-fNg&s'
+              "
+              :alt="user.username || user.userAccount"
+            />
           </div>
           <div class="user-info">
             <div class="user-details">
-              <div class="username">{{ user.username || user.userAccount }}</div>
+              <div class="username">
+                {{ user.username || user.userAccount }}
+              </div>
               <div class="user-phone" v-if="user.phone">
                 <van-icon name="phone-o" size="12" />
                 <span>{{ user.phone }}</span>
@@ -58,12 +67,24 @@
               </div>
               <div v-if="user.profile" class="user-bio">{{ user.profile }}</div>
               <div class="user-tags" v-if="user.tags && user.tags.length">
-                <van-tag plain type="primary" v-for="tag in user.tags" :key="tag" class="tag">
+                <van-tag
+                  plain
+                  type="primary"
+                  v-for="tag in user.tags"
+                  :key="tag"
+                  class="tag"
+                >
                   {{ tag }}
                 </van-tag>
               </div>
             </div>
-            <van-button size="small" type="primary" class="add-friend-btn" @click.stop="addFriend(user)">發起私聊</van-button>
+            <van-button
+              size="small"
+              type="primary"
+              class="add-friend-btn"
+              @click.stop="addFriend(user)"
+              >發起私聊</van-button
+            >
           </div>
         </div>
       </div>
@@ -74,16 +95,16 @@
 <script setup lang="ts">
 /* eslint-disable */
 // @ts-ignore
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted } from "vue";
 // @ts-ignore
-import { useRouter, useRoute } from 'vue-router'
+import { useRouter, useRoute } from "vue-router";
 // @ts-ignore
-import { Toast } from 'vant'
+import { Toast } from "vant";
 // @ts-ignore
-import { searchUsers } from '@/api/user'
+import { searchUsers } from "@/api/user";
 // @ts-ignore
-import { useUserStore } from '@/stores/user'
-import http from '@/api/http'
+import { useUserStore } from "@/stores/user";
+import http from "@/api/http";
 
 interface UserType {
   id: number;
@@ -97,51 +118,53 @@ interface UserType {
   [key: string]: any;
 }
 
-const router = useRouter()
-const route = useRoute()
-const searchResults = ref<UserType[]>([])
-const loading = ref(false)
+const router = useRouter();
+const route = useRoute();
+const searchResults = ref<UserType[]>([]);
+const loading = ref(false);
 
 // 從路由查詢參數中獲取搜索條件
-const keyword = ref(route.query.keyword as string || '')
-const tagList = ref((route.query.tags as string || '').split(',').filter(Boolean))
+const keyword = ref((route.query.keyword as string) || "");
+const tagList = ref(
+  ((route.query.tags as string) || "").split(",").filter(Boolean)
+);
 
 // 計算是否有搜索結果
-const hasResults = computed(() => searchResults.value.length > 0)
+const hasResults = computed(() => searchResults.value.length > 0);
 
-const userStore = useUserStore()
+const userStore = useUserStore();
 
 // 獲取搜索結果
 async function fetchSearchResults() {
   if (!keyword.value && tagList.value.length === 0) {
-    Toast('搜索條件不能為空')
-    goBack()
-    return
+    Toast("搜索條件不能為空");
+    goBack();
+    return;
   }
 
-  loading.value = true
-  
+  loading.value = true;
+
   try {
-    const params: {username?: string, tagNameList?: string[]} = {}
-    
+    const params: { username?: string; tagNameList?: string[] } = {};
+
     if (keyword.value) {
-      params.username = keyword.value
+      params.username = keyword.value;
     }
-    
+
     if (tagList.value.length > 0) {
-      params.tagNameList = tagList.value
+      params.tagNameList = tagList.value;
     }
-    
-    const response = await searchUsers(params)
-    
+
+    const response = await searchUsers(params);
+
     // 獲取當前用户ID
-    const currentUserId = userStore.userInfo?.id
-    
+    const currentUserId = userStore.userInfo?.id;
+
     // 處理響應數據
     if (response && response.data && Array.isArray(response.data)) {
       // 處理標籤數據，如果是字符串則解析為數組
       let results = response.data.map((user: UserType) => {
-        if (user.tags && typeof user.tags === 'string') {
+        if (user.tags && typeof user.tags === "string") {
           try {
             user.tags = JSON.parse(user.tags);
           } catch (e) {
@@ -150,18 +173,18 @@ async function fetchSearchResults() {
         }
         return user;
       });
-      
+
       // 過濾掉當前登錄用户
       if (currentUserId) {
         results = results.filter((user: UserType) => user.id !== currentUserId);
-        console.log('已過濾當前用户，剩餘結果數量:', results.length);
+        console.log("已過濾當前用户，剩餘結果數量:", results.length);
       }
-      
+
       searchResults.value = results;
     } else if (Array.isArray(response)) {
       // 處理標籤數據，如果是字符串則解析為數組
       let results = response.map((user: UserType) => {
-        if (user.tags && typeof user.tags === 'string') {
+        if (user.tags && typeof user.tags === "string") {
           try {
             user.tags = JSON.parse(user.tags);
           } catch (e) {
@@ -170,101 +193,101 @@ async function fetchSearchResults() {
         }
         return user;
       });
-      
+
       // 過濾掉當前登錄用户
       if (currentUserId) {
         results = results.filter((user: UserType) => user.id !== currentUserId);
-        console.log('已過濾當前用户，剩餘結果數量:', results.length);
+        console.log("已過濾當前用户，剩餘結果數量:", results.length);
       }
-      
+
       searchResults.value = results;
     } else {
-      searchResults.value = []
-      console.warn('未收到預期的搜索結果格式:', response)
+      searchResults.value = [];
+      console.warn("未收到預期的搜索結果格式:", response);
     }
-    
+
     if (searchResults.value.length === 0) {
-      Toast('未找到匹配的用户')
+      Toast("未找到匹配的用户");
     }
   } catch (error) {
-    console.error('搜索用户失敗', error)
-    Toast.fail('搜索失敗，請稍後再試')
-    searchResults.value = []
+    console.error("搜索用户失敗", error);
+    Toast.fail("搜索失敗，請稍後再試");
+    searchResults.value = [];
   } finally {
-    loading.value = false
+    loading.value = false;
   }
 }
 
 // 查看用户資料
 function viewUserProfile(user: UserType) {
-  router.push(`/user/${user.id}`)
+  router.push(`/user/${user.id}`);
 }
 
 // 返回上一頁
 function goBack() {
-  router.back()
+  router.back();
 }
 
 // 添加好友/發起私聊
 const addFriend = async (user: UserType) => {
   if (!userStore.isLogin) {
-    Toast('請先登錄');
-    router.push('/login');
+    Toast("請先登錄");
+    router.push("/login");
     return;
   }
-  
+
   try {
     Toast.loading({
-      message: '正在創建聊天...',
+      message: "正在創建聊天...",
       forbidClick: true,
-      duration: 0
+      duration: 0,
     });
-    
+
     try {
       const currentUserId = userStore.userInfo?.id;
       if (!currentUserId) {
-        throw new Error('未獲取到當前用户ID');
+        throw new Error("未獲取到當前用户ID");
       }
-      
+
       const params = {
         ownerId: currentUserId,
-        othersId: user.id
+        othersId: user.id,
       };
-      
-      const response = await http.post('/conversation/create-chat', params);
-      console.log('創建聊天響應:', response);
-      
+
+      const response = await http.post("/conversation/create-chat", params);
+      console.log("創建聊天響應:", response);
+
       // 獲取響應數據
       const responseData = response.data || response;
-      console.log('處理後的響應數據:', responseData);
-      
+      console.log("處理後的響應數據:", responseData);
+
       Toast.clear();
-      
+
       // 檢查響應數據是否包含id
       if (responseData && responseData.id) {
-        console.log('聊天會話ID:', responseData.id);
+        console.log("聊天會話ID:", responseData.id);
         // 使用提取的id進行路由跳轉
         router.push(`/chat/${responseData.id}`);
         return;
       } else {
-        console.error('創建聊天返回數據無效:', responseData);
-        throw new Error('創建聊天返回數據無效');
+        console.error("創建聊天返回數據無效:", responseData);
+        throw new Error("創建聊天返回數據無效");
       }
     } catch (error) {
-      console.error('創建聊天會話失敗:', error);
+      console.error("創建聊天會話失敗:", error);
       Toast.clear();
-      Toast.fail('創建聊天失敗，請稍後重試');
+      Toast.fail("創建聊天失敗，請稍後重試");
     }
   } catch (error) {
     Toast.clear();
-    Toast.fail('操作失敗');
-    console.error('發起私聊失敗:', error);
+    Toast.fail("操作失敗");
+    console.error("發起私聊失敗:", error);
   }
 };
 
 onMounted(() => {
-  fetchSearchResults()
-})
+  fetchSearchResults();
+});
 </script>
 
 <style scoped>
@@ -449,4 +472,4 @@ onMounted(() => {
   align-self: flex-start;
   margin-top: 0;
 }
-</style> 
+</style>

@@ -77,7 +77,7 @@
                   height="40"
                   :src="
                     message.userAvatar ||
-                    'https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg'
+                    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStmeAfZR3Qcxz2bdr35DgXK8sehEeern-fNg&s'
                   "
                   fit="cover"
                 />
@@ -111,7 +111,7 @@
                   height="40"
                   :src="
                     userStore.userInfo?.avatar ||
-                    'https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg'
+                    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStmeAfZR3Qcxz2bdr35DgXK8sehEeern-fNg&s'
                   "
                   fit="cover"
                 />
@@ -336,7 +336,7 @@ const fetchConversationInfo = async () => {
 };
 
 // 輪詢間隔（毫秒）
-const POLL_INTERVAL = 10000;
+const POLL_INTERVAL = 2500;
 let pollTimer: number | null = null;
 
 // 加載聊天記錄

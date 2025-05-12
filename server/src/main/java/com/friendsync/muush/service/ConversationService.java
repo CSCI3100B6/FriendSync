@@ -4,10 +4,11 @@ import java.util.List;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.friendsync.muush.repo.Conversation;
-import com.friendsync.stevenpang.model.domain.User;
+import com.friendsync.stevenpang.model.User;
 
 public interface ConversationService extends IService<Conversation> {
     public List<Conversation> searchConversations(String s);
+    public Conversation createConversationTeam(User owner, String name, String info, Conversation.ConversationType type, String license);
     public Conversation createConversation(User owner, String name, String info, Conversation.ConversationType type);
     public String generateLicense(Long conversationId, User owner);
     public List<Conversation> getOwnConversations(User owner);

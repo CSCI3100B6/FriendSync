@@ -1,7 +1,9 @@
 package com.friendsync.stevenpang.service;
 
-import com.friendsync.stevenpang.model.domain.User;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.friendsync.stevenpang.model.User;
+import com.friendsync.stevenpang.model.request.UserDTO;
+import com.friendsync.stevenpang.model.request.UserRequest;
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.List;
@@ -13,37 +15,30 @@ import java.util.List;
 */
 public interface UserService extends IService<User> {
 
+
+
+
     /**
      * 用户注册
-     *
      * @param userAccount   用户账户
      * @param userPassword  用户密码
      * @param checkPassword 校验密码
-     * @param planetCode    星球编号
-     * @return 新用户 id
+     * @return  新用户ID
      */
-    long userRegister(String userAccount, String userPassword, String checkPassword, String planetCode);
+    long userRegister(String userAccount, String userPassword, String checkPassword);
 
     /**
-     * 用户登录
      *
-     * @param userAccount  用户账户
-     * @param userPassword 用户密码
-     * @param request
-     * @return 脱敏后的用户信息
+     * @param userAccount   用户账户
+     * @param userPassword  用户密码
+     * @return  返回脱敏的用户信息
      */
     User userLogin(String userAccount, String userPassword, HttpServletRequest request);
 
-    /**
-     * 用户脱敏
-     *
-     * @param originUser
-     * @return
-     */
     User getSafetyUser(User originUser);
 
     /**
-     * 用户注销
+     * 用户退出
      *
      * @param request
      * @return
@@ -53,46 +48,22 @@ public interface UserService extends IService<User> {
     /**
      * 根据标签搜索用户
      *
-     * @param tagNameList
+     * @param tagList
      * @return
      */
-    List<User> searchUsersByTags(List<String> tagNameList);
+    List<User> searchUserByTags(List<String> tagList);
 
     /**
-     * 更新用户信息
-     * @param user
+     * 随机获取五条数据
      * @return
      */
-    int updateUser(User user, User loginUser);
+    List<User> getRandomRecords();
 
     /**
-     * 获取当前登录用户信息
+     * 查询用户
+     * @param userRequest
      * @return
      */
-    User getLoginUser(HttpServletRequest request);
-
-    /**
-     * 是否为管理员
-     *
-     * @param request
-     * @return
-     */
-    boolean isAdmin(HttpServletRequest request);
-
-    /**
-     * 是否为管理员
-     *
-     * @param loginUser
-     * @return
-     */
-    boolean isAdmin(User loginUser);
-
-    /**
-     * 匹配用户
-     * @param num
-     * @param loginUser
-     * @return
-     */
-    List<User> matchUsers(long num, User loginUser);
+    List<User> searchUsers(UserRequest userRequest);
 
 }

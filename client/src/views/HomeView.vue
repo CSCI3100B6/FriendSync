@@ -162,7 +162,9 @@ const loadUsers = async () => {
         return {
           id: user.id,
           username: user.username || user.userAccount, // 如果用户名為空，使用賬號
-          avatar: user.avatarUrl || "https://img01.yzcdn.cn/vant/cat.jpeg",
+          avatar:
+            user.avatarUrl ||
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStmeAfZR3Qcxz2bdr35DgXK8sehEeern-fNg&s",
           bio: user.profile || "這個人什麼都沒寫",
           phone: user.phone || "未設置",
           email: user.email || "未設置",

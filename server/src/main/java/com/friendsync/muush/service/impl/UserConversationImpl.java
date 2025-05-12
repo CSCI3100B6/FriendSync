@@ -1,10 +1,6 @@
 package com.friendsync.muush.service.impl;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.springframework.stereotype.Service;
 
@@ -33,44 +29,32 @@ public class UserConversationImpl extends ServiceImpl<UserConversationMapper, Us
         Wrapper<UserConversation> wrapper = new QueryWrapper<UserConversation>()
             .eq("user_id", userId);
         List<UserConversation> arr = mapper.selectList(wrapper);
-        ArrayList<Conversation> ids = new ArrayList<Conversation>();
+        ArrayList<Long> ids = new ArrayList<Long>();
         for (UserConversation uc : arr) {
-            ids.add(conversationMapper.selectById(uc.getConversationId()));
+            ids.add(uc.getConversationId());
         }
         if (ids.isEmpty())
             return Arrays.asList();
-        return ids;
+        return conversationMapper.selectByIds(ids);
     }
 
     @Override
-    public Conversation join(Long userId, Long conversationId) {
-        QueryWrapper<UserConversation> wrapper = new QueryWrapper<>();
-        wrapper.eq("conversation_id", conversationId);
-        wrapper.eq("user_Id", userId);
-        UserConversation userConversation = mapper.selectOne(wrapper);
-        if (userConversation != null)   return conversationMapper.selectById(conversationId);
-
+    public Conversation join(Long userId, Long ConversationId) {
         UserConversation newOne = new UserConversation();
         newOne.setUserId(userId);
-        newOne.setConversationId(conversationId);
+        newOne.setConversationId(ConversationId);
         mapper.insert(newOne);
-        return conversationMapper.selectById(conversationId);
+        return conversationMapper.selectById(ConversationId);
     }
 
     @Override
-    public Conversation joinWithLicense(Long userId, Long conversationId, String license) {
-        Conversation c = conversationMapper.selectById(conversationId);
-        QueryWrapper<UserConversation> wrapper = new QueryWrapper<>();
-
-        wrapper.eq("conversation_id", conversationId);
-        wrapper.eq("user_Id", userId);
-        UserConversation userConversation = mapper.selectOne(wrapper);
-        if (userConversation != null)   return c;
-        if (!c.getLicense().equals(license))    return null;
-
+    public Conversation joinWithLicense(Long userId, Long ConversationId, String license) {
+        Conversation c = conversationMapper.selectById(ConversationId);
+        if (!c.getLicense().equals(license))
+            return null;
         UserConversation newOne = new UserConversation();
         newOne.setUserId(userId);
-        newOne.setConversationId(conversationId);
+        newOne.setConversationId(ConversationId);
         mapper.insert(newOne);
         return c;
     }
@@ -97,7 +81,7 @@ public class UserConversationImpl extends ServiceImpl<UserConversationMapper, Us
         columnMap.put("user_id", userId);
         columnMap.put("conversation_id", conversationId);
         mapper.deleteByMap(columnMap);
-        
+
         // delete the conversation if is the last person
         cnt = mapper.selectCount(new QueryWrapper<UserConversation>().eq("conversation_id", conversationId));
         if (cnt == 0) {

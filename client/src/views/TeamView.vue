@@ -13,36 +13,43 @@
         <div class="search-action" @click="handleSearch">搜索</div>
       </template>
     </van-search>
-    
+
     <div v-if="isSearching" class="search-loading">
       <Loading color="#1989fa" />
       <span>搜索中...</span>
     </div>
-    
+
     <div v-else-if="searchResults.length > 0" class="search-results">
       <section class="section-header">
         <h2 class="section-title">搜索結果</h2>
         <span class="clear-link" @click="clearSearch">清除</span>
       </section>
-      
+
       <div class="team-cards">
-        <div 
-          v-for="team in searchResults" 
-          :key="team.id" 
+        <div
+          v-for="team in searchResults"
+          :key="team.id"
           class="team-card"
           @click="onTeamClick(team)"
         >
-          <div class="team-logo" :style="{backgroundColor: getTeamColor(team.type)}">
+          <div
+            class="team-logo"
+            :style="{ backgroundColor: getTeamColor(team.type) }"
+          >
             <van-icon :name="getTeamIcon(team.type)" color="#fff" size="24" />
           </div>
           <div class="team-info">
             <h3>{{ team.name }}</h3>
-            <p class="team-desc" v-if="team.information">{{ team.information }}</p>
+            <p class="team-desc" v-if="team.information">
+              {{ team.information }}
+            </p>
             <div class="team-type-badge" :class="team.type.toLowerCase()">
-              {{ 
-                team.type === 'TEAM' ? '加密團隊' : 
-                team.type === 'ROOM' ? '公開聊天室' : 
-                '私聊' 
+              {{
+                team.type === "TEAM"
+                  ? "加密團隊"
+                  : team.type === "ROOM"
+                  ? "公開聊天室"
+                  : "私聊"
               }}
             </div>
           </div>
@@ -51,10 +58,10 @@
               <van-icon name="arrow" color="#c8c9cc" />
             </template>
             <template v-else>
-              <van-button 
-                size="small" 
-                type="primary" 
-                class="join-btn" 
+              <van-button
+                size="small"
+                type="primary"
+                class="join-btn"
                 @click.stop="handleJoinTeam(team)"
               >
                 加入
@@ -64,37 +71,53 @@
         </div>
       </div>
     </div>
-    
+
     <template v-else>
       <section class="section-header">
         <h2 class="section-title">我創建的團隊</h2>
-        <van-button round size="small" type="primary" color="#1989fa" icon="plus" @click="showCreateTeamDialog">創建</van-button>
+        <van-button
+          round
+          size="small"
+          type="primary"
+          color="#1989fa"
+          icon="plus"
+          @click="showCreateTeamDialog"
+          >創建</van-button
+        >
       </section>
-      
+
       <div v-if="teams.length === 0" class="empty-state">
         <van-empty description="您還沒有創建過團隊，點擊上方創建按鈕開始創建" />
       </div>
-      
+
       <div v-else class="team-cards">
         <div v-for="team in teams" :key="team.id" class="team-card">
-          <div class="team-logo" :style="{backgroundColor: team.color}" @click="onTeamClick(team)">
+          <div
+            class="team-logo"
+            :style="{ backgroundColor: team.color }"
+            @click="onTeamClick(team)"
+          >
             <van-icon :name="team.icon" color="#fff" size="24" />
           </div>
           <div class="team-info" @click="onTeamClick(team)">
             <h3>{{ team.name }}</h3>
-            <p class="team-desc" v-if="team.information">{{ team.information }}</p>
+            <p class="team-desc" v-if="team.information">
+              {{ team.information }}
+            </p>
             <div class="team-type-badge" :class="team.type.toLowerCase()">
-              {{ 
-                team.type === 'TEAM' ? '加密團隊' : 
-                team.type === 'ROOM' ? '公開聊天室' : 
-                '私聊' 
+              {{
+                team.type === "TEAM"
+                  ? "加密團隊"
+                  : team.type === "ROOM"
+                  ? "公開聊天室"
+                  : "私聊"
               }}
             </div>
           </div>
           <div class="team-action">
-            <van-button 
-              size="small" 
-              type="danger" 
+            <van-button
+              size="small"
+              type="danger"
               plain
               class="action-btn delete-btn"
               @click.stop="handleDeleteTeam(team)"
@@ -129,28 +152,36 @@
           :rules="[{ required: true, message: '請填寫團隊介紹' }]"
           :autosize="{ minHeight: 60, maxHeight: 120 }"
         />
-        
+
         <div class="form-item">
           <div class="form-label">訪問類型</div>
           <div class="access-options">
-            <div 
-              class="access-option" 
+            <div
+              class="access-option"
               :class="{ active: teamForm.type === 'ROOM' }"
               @click="selectAccessType('ROOM')"
             >
-              <van-icon name="friends-o" size="20" :color="teamForm.type === 'ROOM' ? '#07c160' : '#969799'" />
+              <van-icon
+                name="friends-o"
+                size="20"
+                :color="teamForm.type === 'ROOM' ? '#07c160' : '#969799'"
+              />
               <div class="option-content">
                 <div class="option-title">公開聊天室</div>
                 <div class="option-desc">所有人可以自由加入，適合公開討論</div>
               </div>
             </div>
-            
-            <div 
-              class="access-option" 
+
+            <div
+              class="access-option"
               :class="{ active: teamForm.type === 'TEAM' }"
               @click="selectAccessType('TEAM')"
             >
-              <van-icon name="shield-o" size="20" :color="teamForm.type === 'TEAM' ? '#1989fa' : '#969799'" />
+              <van-icon
+                name="shield-o"
+                size="20"
+                :color="teamForm.type === 'TEAM' ? '#1989fa' : '#969799'"
+              />
               <div class="option-content">
                 <div class="option-title">加密團隊</div>
                 <div class="option-desc">需要密碼才能加入，適合私密交流</div>
@@ -158,7 +189,7 @@
             </div>
           </div>
         </div>
-        
+
         <van-field
           v-if="teamForm.type === 'TEAM'"
           v-model="teamForm.password"
@@ -171,12 +202,14 @@
 
       <template #footer>
         <div class="dialog-footer">
-          <van-button plain round size="small" @click="onDialogCancel">取消</van-button>
-          <van-button 
-            type="primary" 
-            round 
-            size="small" 
-            :loading="loading" 
+          <van-button plain round size="small" @click="onDialogCancel"
+            >取消</van-button
+          >
+          <van-button
+            type="primary"
+            round
+            size="small"
+            :loading="loading"
             @click="handleCreateTeam"
           >
             確定
@@ -204,12 +237,18 @@
 
       <template #footer>
         <div class="dialog-footer">
-          <van-button plain round size="small" @click="showPasswordDialog = false">取消</van-button>
-          <van-button 
-            type="primary" 
-            round 
-            size="small" 
-            :loading="loading" 
+          <van-button
+            plain
+            round
+            size="small"
+            @click="showPasswordDialog = false"
+            >取消</van-button
+          >
+          <van-button
+            type="primary"
+            round
+            size="small"
+            :loading="loading"
             @click="confirmJoinTeam"
           >
             確定
@@ -223,25 +262,25 @@
 <script setup lang="ts">
 /* eslint-disable */
 // @ts-ignore
-import { ref, watch, onMounted } from 'vue'
+import { ref, watch, onMounted } from "vue";
 // @ts-ignore
-import { useRouter } from 'vue-router'
+import { useRouter } from "vue-router";
 // @ts-ignore
-import { Toast, Loading, Dialog } from 'vant'
+import { Toast, Loading, Dialog } from "vant";
 // @ts-ignore
-import { 
-  createTeamRoom, 
-  ConversationType, 
-  searchConversations, 
+import {
+  createTeamRoom,
+  ConversationType,
+  searchConversations,
   getOwnConversations,
   getJoinedConversations,
   joinPublicRoom,
   joinTeamWithLicense,
-  deleteConversation
-} from '@/api/conversation'
+  deleteConversation,
+} from "@/api/conversation";
 // @ts-ignore
-import { useUserStore } from '@/stores/user'
-import http from '@/api/http'
+import { useUserStore } from "@/stores/user";
+import http from "@/api/http";
 
 // 定義會話類型接口
 interface Conversation {
@@ -263,116 +302,121 @@ interface TeamForm {
   password: string;
 }
 
-const router = useRouter()
-const userStore = useUserStore()
-const searchText = ref('')
-const showDialog = ref(false)
-const loading = ref(false)
-const isSearching = ref(false)
-const searchResults = ref<Conversation[]>([])
+const router = useRouter();
+const userStore = useUserStore();
+const searchText = ref("");
+const showDialog = ref(false);
+const loading = ref(false);
+const isSearching = ref(false);
+const searchResults = ref<Conversation[]>([]);
 // 存儲用户是否已加入會話的狀態
-const joinedTeamIds = ref<number[]>([])
+const joinedTeamIds = ref<number[]>([]);
 // 添加密碼輸入框變量
-const teamPassword = ref('')
-const showPasswordDialog = ref(false)
-const currentTeam = ref<Conversation | null>(null)
+const teamPassword = ref("");
+const showPasswordDialog = ref(false);
+const currentTeam = ref<Conversation | null>(null);
 
 // 團隊表單
 const teamForm = ref<TeamForm>({
-  name: '',
-  information: '',
-  type: 'ROOM',
+  name: "",
+  information: "",
+  type: "ROOM",
   isPrivate: false,
-  password: ''
-})
+  password: "",
+});
 
 // 選擇訪問類型
 function selectAccessType(type: string) {
-  teamForm.value.type = type
-  teamForm.value.isPrivate = type === 'TEAM'
-  
+  teamForm.value.type = type;
+  teamForm.value.isPrivate = type === "TEAM";
+
   // 如果切換到公開，清空密碼
-  if (type === 'ROOM') {
-    teamForm.value.password = ''
+  if (type === "ROOM") {
+    teamForm.value.password = "";
   }
 }
 
 // 監聽類型變化，用於更新UI
-watch(() => teamForm.value.type, (newType: string) => {
-  console.log('當前選擇的類型:', newType)
-})
+watch(
+  () => teamForm.value.type,
+  (newType: string) => {
+    console.log("當前選擇的類型:", newType);
+  }
+);
 
 // 我的團隊數據
-const teams = ref<{
-  id: number;
-  name: string;
-  membersCount: number;
-  icon: string;
-  color: string;
-  information: string;
-  ownerId: number;
-  isOwner: boolean;
-  type: string;
-}[]>([])
+const teams = ref<
+  {
+    id: number;
+    name: string;
+    membersCount: number;
+    icon: string;
+    color: string;
+    information: string;
+    ownerId: number;
+    isOwner: boolean;
+    type: string;
+  }[]
+>([]);
 
 // 加載用户創建的會話
 async function loadOwnTeams() {
-  loading.value = true
-  
+  loading.value = true;
+
   try {
     // 獲取當前用户ID
-    const userId = userStore.userInfo?.id
-    
+    const userId = userStore.userInfo?.id;
+
     if (!userId) {
-      console.warn('當前用户ID不存在，可能未登錄')
-      Toast.fail('請先登錄')
+      console.warn("當前用户ID不存在, 可能未登錄");
+      Toast.fail("請先登錄");
       setTimeout(() => {
-        router.push('/login')
-      }, 1500)
-      loading.value = false
-      return
+        router.push("/login");
+      }, 1500);
+      loading.value = false;
+      return;
     }
-    
+
     // 調用獲取用户創建的會話接口，傳遞用户ID
-    const response = await getOwnConversations(userId)
-    console.log('獲取用户創建的團隊響應:', response)
-    
-    let conversationList: any[] = []
-    
+    const response = await getOwnConversations(userId);
+    console.log("獲取用户創建的團隊響應:", response);
+
+    let conversationList: any[] = [];
+
     if (Array.isArray(response)) {
-      conversationList = response
+      conversationList = response;
     } else if (response && Array.isArray(response.data)) {
-      conversationList = response.data
+      conversationList = response.data;
     } else {
-      console.warn('未收到預期的團隊列表格式:', response)
-      conversationList = []
+      console.warn("未收到預期的團隊列表格式:", response);
+      conversationList = [];
     }
-    
+
     // 處理團隊數據，為每個團隊添加UI相關屬性
-    const transformedTeams = conversationList.map(team => {
+    const transformedTeams = conversationList.map((team) => {
       // 用户創建的會話，所有條目都標記為創建者
-      const isOwner = true
-      
+      const isOwner = true;
+
       // 根據類型設置圖標
-      const icon = getTeamIcon(team.type)
-      
+      const icon = getTeamIcon(team.type);
+
       // 生成隨機顏色
-      const color = getTeamColor(team.type)
-      
+      const color = getTeamColor(team.type);
+
       return {
         ...team,
         isOwner,
         icon,
-        color
-      }
-    })
-    
-    teams.value = transformedTeams
+        color,
+      };
+    });
+
+    teams.value = transformedTeams;
   } catch (error) {
-    console.error('獲取用户創建的團隊失敗', error)
-    teams.value = []
+    console.error("獲取用户創建的團隊失敗", error);
+    teams.value = [];
   } finally {
-    loading.value = false
+    loading.value = false;
   }
 }
 
@@ -380,17 +424,17 @@ async function loadOwnTeams() {
 async function loadJoinedTeamIds() {
   try {
     const response = await getJoinedConversations();
-    
+
     if (Array.isArray(response)) {
       // 提取已加入會話的ID
-      joinedTeamIds.value = response.map(item => item.id);
-      console.log('已加入的會話ID:', joinedTeamIds.value);
+      joinedTeamIds.value = response.map((item) => item.id);
+      console.log("已加入的會話ID:", joinedTeamIds.value);
     } else {
-      console.warn('獲取已加入會話列表格式異常:', response);
+      console.warn("獲取已加入會話列表格式異常:", response);
       joinedTeamIds.value = [];
     }
   } catch (error) {
-    console.error('獲取已加入會話ID失敗', error);
+    console.error("獲取已加入會話ID失敗", error);
     joinedTeamIds.value = [];
   }
 }
@@ -399,115 +443,119 @@ async function loadJoinedTeamIds() {
 onMounted(() => {
   loadOwnTeams();
   loadJoinedTeamIds();
-})
+});
 
 // 顯示創建團隊對話框
 function showCreateTeamDialog() {
   // 重置表單
   teamForm.value = {
-    name: '',
-    information: '',
-    type: 'ROOM',
+    name: "",
+    information: "",
+    type: "ROOM",
     isPrivate: false,
-    password: ''
-  }
-  showDialog.value = true
+    password: "",
+  };
+  showDialog.value = true;
 }
 
 // 取消對話框
 function onDialogCancel() {
-  showDialog.value = false
+  showDialog.value = false;
 }
 
 // 對話框關閉前的驗證
 function beforeDialogClose(action: string, done: () => void) {
   // 如果正在加載，阻止關閉
   if (loading.value) {
-    return false
+    return false;
   }
-  
-  if (action === 'confirm') {
+
+  if (action === "confirm") {
     // 驗證表單
     if (!teamForm.value.name) {
-      Toast('請輸入團隊名稱')
-      return false
+      Toast("請輸入團隊名稱");
+      return false;
     } else if (!teamForm.value.information) {
-      Toast('請輸入團隊介紹')
-      return false
-    } else if (teamForm.value.type === 'TEAM' && !teamForm.value.password) {
-      Toast('請設置訪問密碼')
-      return false
+      Toast("請輸入團隊介紹");
+      return false;
+    } else if (teamForm.value.type === "TEAM" && !teamForm.value.password) {
+      Toast("請設置訪問密碼");
+      return false;
     }
   }
-  
-  done()
+
+  done();
 }
 
 // 處理創建團隊
 async function handleCreateTeam() {
   // 表單驗證
   if (!teamForm.value.name) {
-    Toast('請輸入團隊名稱')
-    return
+    Toast("請輸入團隊名稱");
+    return;
   } else if (!teamForm.value.information) {
-    Toast('請輸入團隊介紹')
-    return
-  } else if (teamForm.value.type === 'TEAM' && !teamForm.value.password) {
-    Toast('請設置訪問密碼')
-    return
+    Toast("請輸入團隊介紹");
+    return;
+  } else if (teamForm.value.type === "TEAM" && !teamForm.value.password) {
+    Toast("請設置訪問密碼");
+    return;
   }
-  
-  loading.value = true
-  
+
+  loading.value = true;
+
   try {
     Toast.loading({
-      message: '創建中...',
+      message: "創建中...",
       forbidClick: true,
-      duration: 0
-    })
-    
+      duration: 0,
+    });
+
     // 獲取當前用户ID
-    const userId = userStore.userInfo?.id
-    
+    const userId = userStore.userInfo?.id;
+
     if (!userId) {
-      console.warn('當前用户ID不存在，可能未登錄')
-      Toast.clear()
-      Toast.fail('請先登錄')
+      console.warn("當前用户ID不存在，可能未登錄");
+      Toast.clear();
+      Toast.fail("請先登錄");
       setTimeout(() => {
-        router.push('/login')
-      }, 1500)
-      loading.value = false
-      return
+        router.push("/login");
+      }, 1500);
+      loading.value = false;
+      return;
     }
 
-    
     // 轉換為後端需要的類型
-    const conversationType = teamForm.value.type as ConversationType
-    
+    const conversationType = teamForm.value.type as ConversationType;
+
     // 獲取密碼參數
-    const license = teamForm.value.type === 'TEAM' ? teamForm.value.password : undefined
-    
+    const license =
+      teamForm.value.type === "TEAM" ? teamForm.value.password : undefined;
+
     // 調用創建團隊API
     const response = await createTeamRoom(
       teamForm.value.name,
       teamForm.value.information,
       conversationType,
       license
-    )
-    
-    console.log('創建團隊響應:', response)
-    
+    );
+
+    console.log("創建團隊響應:", response);
+
     // 檢查響應是否有效
     let success = false;
 
     // 嘗試從不同結構中獲取響應數據
-    if (response && typeof response === 'object') {
-      if ('id' in response) {
+    if (response && typeof response === "object") {
+      if ("id" in response) {
         success = true;
-      } else if (response.data && typeof response.data === 'object' && 'id' in response.data) {
+      } else if (
+        response.data &&
+        typeof response.data === "object" &&
+        "id" in response.data
+      ) {
         success = true;
       } else {
-        console.warn('創建成功但返回數據格式異常:', response);
+        console.warn("創建成功但返回數據格式異常:", response);
         // 假設請求已成功
         success = true;
       }
@@ -516,138 +564,176 @@ async function handleCreateTeam() {
     if (response) {
       // 刷新創建的團隊列表
       await loadOwnTeams();
-      
+
       // 關閉加載提示和對話框
       Toast.clear();
-      Toast.success('創建成功');
+      Toast.success("創建成功");
       showDialog.value = false;
     } else {
       Toast.clear();
-      Toast.fail('創建失敗，返回數據無效');
+      Toast.fail("創建失敗，返回數據無效");
     }
   } catch (error) {
-    console.error('創建團隊失敗', error)
-    Toast.clear()
-    
+    console.error("創建團隊失敗", error);
+    Toast.clear();
+
     // 獲取錯誤詳情
-    const axiosError = error as any
+    const axiosError = error as any;
     if (axiosError.response) {
-      const status = axiosError.response.status
-      const errorData = axiosError.response.data
-      
+      const status = axiosError.response.status;
+      const errorData = axiosError.response.data;
+
       if (status === 400) {
         // 請求參數錯誤
-        let errorMsg = '請求參數錯誤'
+        let errorMsg = "請求參數錯誤";
         if (errorData && errorData.message) {
-          errorMsg = errorData.message
+          errorMsg = errorData.message;
         } else if (errorData && errorData.description) {
-          errorMsg = errorData.description
+          errorMsg = errorData.description;
         }
-        Toast.fail(errorMsg)
+        Toast.fail(errorMsg);
       } else if (status === 401) {
         // 未登錄或token過期
-        Toast.fail('登錄已過期，請重新登錄')
+        Toast.fail("登錄已過期，請重新登錄");
         setTimeout(() => {
-          router.push('/login')
-        }, 1500)
+          router.push("/login");
+        }, 1500);
       } else {
-        Toast.fail('創建失敗，請稍後再試')
+        Toast.fail("創建失敗，請稍後再試");
       }
     } else {
-      Toast.fail('創建失敗，請稍後再試')
+      Toast.fail("創建失敗，請稍後再試");
     }
   } finally {
-    loading.value = false
+    loading.value = false;
   }
 }
 
 // 生成隨機顏色
 function getRandomColor() {
-  const colors = ['#1989fa', '#FF6B35', '#6DD3E0', '#7367F0', '#28C76F', '#EA5455']
-  return colors[Math.floor(Math.random() * colors.length)]
+  const colors = [
+    "#1989fa",
+    "#FF6B35",
+    "#6DD3E0",
+    "#7367F0",
+    "#28C76F",
+    "#EA5455",
+  ];
+  return colors[Math.floor(Math.random() * colors.length)];
 }
 
 // 點擊團隊
-function onTeamClick(team: { id: number, name?: string, information?: string, type?: string, isOwner?: boolean, ownerId?: number }) {
+function onTeamClick(team: {
+  id: number;
+  name?: string;
+  information?: string;
+  type?: string;
+  isOwner?: boolean;
+  ownerId?: number;
+}) {
   // 跳轉到聊天室頁面，同時傳遞會話相關信息
-  router.push({
-    path: `/team/${team.id}`,
-    query: {
-      name: team.name,
-      information: team.information,
-      type: team.type,
-      ownerId: team.ownerId?.toString()
+  if (isTeamJoined(team.id)) {
+    // User is already a member, allow direct access
+    router.push({
+      path: `/team/${team.id}`,
+      query: {
+        name: team.name,
+        information: team.information,
+        type: team.type,
+        ownerId: team.ownerId?.toString(),
+      },
+    });
+  } else {
+    // User is not a member, handle according to team type
+    if (team.type === "TEAM") {
+      // For private teams, show the password dialog
+      currentTeam.value = {
+        id: team.id,
+        name: team.name || "",
+        information: team.information || "",
+        type: team.type || "",
+        ownerId: team.ownerId || 0,
+        license: null, // Add the missing license field
+      };
+      teamPassword.value = ""; // Clear previous input
+      showPasswordDialog.value = true;
+    } else if (team.type === "ROOM") {
+      // For public rooms, use the join function
+      handleJoinTeam(team as any);
+    } else {
+      // For other types (like CHAT)
+      Toast("無法訪問此會話");
     }
-  })
+  }
 }
 
 // 處理搜索
 async function handleSearch() {
   if (!searchText.value.trim()) {
-    return
+    return;
   }
-  
-  isSearching.value = true
-  
+
+  isSearching.value = true;
+
   try {
-    const response = await searchConversations(searchText.value.trim())
-    console.log('搜索響應:', response)
-    
+    const response = await searchConversations(searchText.value.trim());
+    console.log("搜索響應:", response);
+
     if (Array.isArray(response)) {
-      searchResults.value = response
+      searchResults.value = response;
       if (response.length === 0) {
-        Toast('未找到匹配的團隊或聊天室')
+        Toast("未找到匹配的團隊或聊天室");
       }
     } else {
-      searchResults.value = []
-      Toast('未找到匹配的團隊或聊天室')
+      searchResults.value = [];
+      Toast("未找到匹配的團隊或聊天室");
     }
   } catch (error) {
-    console.error('搜索失敗', error)
-    Toast.fail('搜索失敗，請稍後再試')
-    searchResults.value = []
+    console.error("搜索失敗", error);
+    Toast.fail("搜索失敗，請稍後再試");
+    searchResults.value = [];
   } finally {
-    isSearching.value = false
+    isSearching.value = false;
   }
 }
 
 // 清除搜索
 function clearSearch() {
-  searchText.value = ''
-  searchResults.value = []
+  searchText.value = "";
+  searchResults.value = [];
 }
 
 // 獲取團隊顏色
 function getTeamColor(type: string) {
   switch (type) {
-    case 'TEAM':
-      return '#1989fa'; // 加密團隊使用藍色，表示安全
-    case 'ROOM':
-      return '#07c160'; // 公共聊天室使用綠色，表示公開
-    case 'CHAT':
-      return '#ff976a'; // 私聊使用橙色，表示個人
+    case "TEAM":
+      return "#1989fa"; // 加密團隊使用藍色，表示安全
+    case "ROOM":
+      return "#07c160"; // 公共聊天室使用綠色，表示公開
+    case "CHAT":
+      return "#ff976a"; // 私聊使用橙色，表示個人
     default:
-      return '#969799'; // 默認使用灰色
+      return "#969799"; // 默認使用灰色
   }
 }
 
 // 獲取團隊圖標
 function getTeamIcon(type: string) {
   switch (type) {
-    case 'TEAM':
-      return 'shield-o'; // 加密團隊使用盾牌圖標，表示安全性
-    case 'ROOM':
-      return 'friends-o'; // 公共聊天室使用好友圖標，表示羣體交流
-    case 'CHAT':
-      return 'chat-o'; // 私聊使用聊天氣泡圖標，表示一對一交流
+    case "TEAM":
+      return "shield-o"; // 加密團隊使用盾牌圖標，表示安全性
+    case "ROOM":
+      return "friends-o"; // 公共聊天室使用好友圖標，表示羣體交流
+    case "CHAT":
+      return "chat-o"; // 私聊使用聊天氣泡圖標，表示一對一交流
     default:
-      return 'comment-o'; // 默認使用評論圖標
+      return "comment-o"; // 默認使用評論圖標
   }
 }
 
 // 修改搜索結果組件，添加是否已加入的判斷
 function isTeamJoined(teamId: number): boolean {
-  return joinedTeamIds.value.includes(teamId)
+  return joinedTeamIds.value.includes(teamId);
 }
 
 // 處理加入團隊
@@ -659,31 +745,31 @@ async function handleJoinTeam(team: Conversation) {
   }
 
   try {
-    if (team.type === 'TEAM') {
+    if (team.type === "TEAM") {
       // 團隊類型需要輸入密碼 - 顯示密碼輸入對話框
       currentTeam.value = team;
-      teamPassword.value = ''; // 清空上次輸入
+      teamPassword.value = ""; // 清空上次輸入
       showPasswordDialog.value = true;
     } else {
       // 聊天室類型不需要密碼
       Toast.loading({
-        message: '加入中...',
+        message: "加入中...",
         forbidClick: true,
-        duration: 0
+        duration: 0,
       });
-      
+
       const result = await joinPublicRoom(team.id);
-      
+
       if (result) {
         Toast.clear();
-        Toast.success('加入成功');
-        
+        Toast.success("加入成功");
+
         // 添加到已加入列表
         joinedTeamIds.value.push(team.id);
-        
+
         // 刷新已加入會話ID列表
         await loadJoinedTeamIds();
-        
+
         // 加入成功後跳轉到團隊聊天頁面
         setTimeout(() => {
           if (currentTeam.value) {
@@ -693,47 +779,50 @@ async function handleJoinTeam(team: Conversation) {
       }
     }
   } catch (error) {
-    console.error('加入失敗', error);
+    console.error("加入失敗", error);
     Toast.clear();
-    Toast.fail('加入失敗，請稍後再試');
+    Toast.fail("加入失敗，請稍後再試");
   }
 }
 
 // 確認加入加密團隊
 async function confirmJoinTeam() {
   if (!teamPassword.value) {
-    Toast('密碼不能為空');
+    Toast("密碼不能為空");
     return;
   }
-  
+
   if (!currentTeam.value) {
     return;
   }
-  
+
   try {
     // 顯示加載中
     Toast.loading({
-      message: '加入中...',
+      message: "加入中...",
       forbidClick: true,
-      duration: 0
+      duration: 0,
     });
-    
+
     // 調用加入團隊API
-    const result = await joinTeamWithLicense(currentTeam.value.id, teamPassword.value);
-    
+    const result = await joinTeamWithLicense(
+      currentTeam.value.id,
+      teamPassword.value
+    );
+
     if (result) {
       Toast.clear();
-      Toast.success('加入成功');
-      
+      Toast.success("加入成功");
+
       // 添加到已加入列表
       joinedTeamIds.value.push(currentTeam.value.id);
-      
+
       // 刷新已加入會話ID列表
       await loadJoinedTeamIds();
-      
+
       // 關閉密碼輸入對話框
       showPasswordDialog.value = false;
-      
+
       // 加入成功後跳轉到團隊聊天頁面
       setTimeout(() => {
         if (currentTeam.value) {
@@ -742,61 +831,68 @@ async function confirmJoinTeam() {
       }, 500);
     }
   } catch (error) {
-    console.error('加入團隊失敗', error);
+    console.error("加入團隊失敗", error);
     Toast.clear();
-    Toast.fail('加入失敗，密碼可能不正確');
+    Toast.fail("加入失敗，密碼可能不正確");
   }
 }
 
 // 處理刪除團隊
-async function handleDeleteTeam(team: { id: number, name: string, ownerId: number }) {
+async function handleDeleteTeam(team: {
+  id: number;
+  name: string;
+  ownerId: number;
+}) {
   try {
     Dialog.confirm({
-      title: '解散團隊',
+      title: "解散團隊",
       message: `確定要解散"${team.name}"嗎？此操作不可撤銷。`,
-      confirmButtonText: '解散',
-      confirmButtonColor: '#ee0a24'
-    }).then(async () => {
-      Toast.loading({
-        message: '刪除中...',
-        forbidClick: true,
-        duration: 0
-      })
-      
-      // 獲取當前用户ID
-      const userId = userStore.userInfo?.id
-      
-      if (!userId) {
-        Toast.clear();
-        Toast.fail('用户未登錄，請先登錄');
-        return;
-      }
-      
-      // 調用刪除API，只傳遞會話ID
-      const response = await deleteConversation(team.id);
-      
-      Toast.clear()
-      
-      // 判斷響應是否成功
-      const isSuccess = 
-        (typeof response === 'string' && response === 'success') || 
-        (response && typeof response === 'object' && 
-          (response.data === 'success' || response.status === 200));
-      
-      if (isSuccess) {
-        Toast.success('已成功解散')
-        // 刷新創建的團隊列表
-        await loadOwnTeams()
-      } else {
-        Toast.fail('解散失敗，請稍後再試')
-      }
-    }).catch(() => {
-      // 用户取消，不做處理
+      confirmButtonText: "解散",
+      confirmButtonColor: "#ee0a24",
     })
+      .then(async () => {
+        Toast.loading({
+          message: "刪除中...",
+          forbidClick: true,
+          duration: 0,
+        });
+
+        // 獲取當前用户ID
+        const userId = userStore.userInfo?.id;
+
+        if (!userId) {
+          Toast.clear();
+          Toast.fail("用户未登錄，請先登錄");
+          return;
+        }
+
+        // 調用刪除API，只傳遞會話ID
+        const response = await deleteConversation(team.id);
+
+        Toast.clear();
+
+        // 判斷響應是否成功
+        const isSuccess =
+          (typeof response === "string" && response === "success") ||
+          (response &&
+            typeof response === "object" &&
+            (response.data === "success" || response.status === 200));
+
+        if (isSuccess) {
+          Toast.success("已成功解散");
+          // 刷新創建的團隊列表
+          await loadOwnTeams();
+        } else {
+          Toast.fail("解散失敗，請稍後再試");
+        }
+      })
+      .catch(() => {
+        // 用户取消，不做處理
+      });
   } catch (error) {
-    console.error('刪除失敗', error)
-    Toast.clear()
-    Toast.fail('刪除失敗，請稍後再試')
+    console.error("刪除失敗", error);
+    Toast.clear();
+    Toast.fail("刪除失敗，請稍後再試");
   }
 }
 </script>
@@ -1058,7 +1154,7 @@ async function handleDeleteTeam(team: { id: number, name: string, ownerId: numbe
 
 .team-type-badge.room {
   background-color: rgba(255, 107, 53, 0.1);
-  color: #FF6B35;
+  color: #ff6b35;
 }
 
 .team-type-badge.chat {
@@ -1084,4 +1180,4 @@ async function handleDeleteTeam(team: { id: number, name: string, ownerId: numbe
   border-radius: 12px;
   margin-bottom: 20px;
 }
-</style> 
+</style>

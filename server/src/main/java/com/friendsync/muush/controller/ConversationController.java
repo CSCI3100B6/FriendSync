@@ -2,10 +2,7 @@ package com.friendsync.muush.controller;
 
 import static com.friendsync.stevenpang.constant.UserConstant.USER_LOGIN_STATE;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import com.friendsync.stevenpang.model.domain.User;
+import com.friendsync.stevenpang.model.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,12 +18,14 @@ import com.friendsync.muush.repo.TDO.CreateChatRequest;
 import com.friendsync.muush.repo.TDO.CreateTeamRoomRequest;
 import com.friendsync.muush.service.ConversationService;
 import com.friendsync.muush.service.UserConversationService;
-import com.friendsync.stevenpang.constant.UserConstant;
 import com.friendsync.stevenpang.service.UserService;
 
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/conversation")
@@ -49,10 +48,10 @@ public class ConversationController {
             if (!keyword.equals("")) {
                 return ResponseEntity.status(HttpStatus.OK).body(service.searchConversations(keyword));
             } else {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("need GET param: keyword"); 
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("need GET param keyword");
             }
         }
-    
+
     @PostMapping("/create-team-room")
     public ResponseEntity<?> createTeamRoom(
         HttpServletRequest request,
@@ -64,11 +63,23 @@ public class ConversationController {
         else if (createConversationRequest.getType() == ConversationType.CHAT)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("wrong conversation type");
         User user = (User) session.getAttribute(USER_LOGIN_STATE);
-        Conversation c = service.createConversation(
-            user,
-            createConversationRequest.getName(),
-            createConversationRequest.getInformation(),
-            createConversationRequest.getType());
+        Conversation c = new Conversation();
+        if (createConversationRequest.getType().equals("ROOM")){
+            c = service.createConversation(
+                    user,
+                    createConversationRequest.getName(),
+                    createConversationRequest.getInformation(),
+                    createConversationRequest.getType()
+            );
+        }else {
+            c = service.createConversationTeam(
+                    user,
+                    createConversationRequest.getName(),
+                    createConversationRequest.getInformation(),
+                    createConversationRequest.getType(),
+                    createConversationRequest.getLicense()
+            );
+        }
         if (c == null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("failed");
         userConversationService.join(user.getId(), c.getId());
@@ -92,19 +103,20 @@ public class ConversationController {
             othersName,
             "Chat with " + othersName,
             ConversationType.CHAT);
-        
+
         if (c == null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("failed");
         userConversationService.join(user.getId(), c.getId());
         userConversationService.join(createChatRequest.getOthersId(), c.getId());
         return ResponseEntity.ok(c);
     }
-    
+
 
     @GetMapping("/generate")
     public ResponseEntity<?> genLicense(
         HttpServletRequest request,
-        @RequestParam(value = "id") Long id
+        @RequestParam(value = "id") Long id,
+        @RequestParam(value = "owner") Long owner
     ) {
         HttpSession session = request.getSession();
         if (session == null || session.getAttribute(USER_LOGIN_STATE) == null)
@@ -118,7 +130,8 @@ public class ConversationController {
 
     @GetMapping("/getown")
     public ResponseEntity<?> getOwn(
-        HttpServletRequest request
+        HttpServletRequest request,
+        @RequestParam("owner") Long owner
     ) {
         HttpSession session = request.getSession();
         if (session == null || session.getAttribute(USER_LOGIN_STATE) == null)
@@ -128,10 +141,10 @@ public class ConversationController {
     }
 
     @GetMapping("/delete")
-    public ResponseEntity<?> delete(   
-        HttpServletRequest request,
-        @RequestParam("id") Long id
-     ) {
+    public ResponseEntity<?> delete(
+            HttpServletRequest request,
+            @RequestParam("id") Long id
+    ) {
         HttpSession session = request.getSession();
         if (session == null || session.getAttribute(USER_LOGIN_STATE) == null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("login first");
@@ -149,15 +162,12 @@ public class ConversationController {
     @GetMapping("/all")
     public ResponseEntity<?> getAllConversation(HttpServletRequest request) {
         HttpSession session = request.getSession();
-        if (session == null || session.getAttribute(USER_LOGIN_STATE) == null)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("login first");
         if (session != null)
         {
             User user = (User) session.getAttribute(USER_LOGIN_STATE);
-            if (user.getUserRole() == UserConstant.ADMIN_ROLE)
-                return ResponseEntity.ok(service.getAllConversation());
+            return ResponseEntity.ok(service.getAllConversation());
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("not admin");
     }
-    
+
 }

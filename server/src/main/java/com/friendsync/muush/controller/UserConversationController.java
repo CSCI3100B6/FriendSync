@@ -1,6 +1,7 @@
 package com.friendsync.muush.controller;
 
-import com.friendsync.stevenpang.model.domain.User;
+import com.friendsync.muush.repo.Conversation;
+import com.friendsync.stevenpang.model.User;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -53,7 +54,7 @@ public class UserConversationController {
         if (session == null || session.getAttribute(USER_LOGIN_STATE) == null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("login first");
         User user = (User) session.getAttribute(USER_LOGIN_STATE);
-        var result = service.joinWithLicense(user.getId(), id, license);
+        Conversation result = service.joinWithLicense(user.getId(), id, license);
         if (result == null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("wrong license");
         return ResponseEntity.ok(result);
@@ -61,9 +62,9 @@ public class UserConversationController {
 
     @GetMapping("/leave")
     public ResponseEntity<?> leave(
-        HttpServletRequest request,
-        @RequestParam(value = "id", required = true, defaultValue = "") Long id,
-        @RequestParam(value = "new_owner", required = false, defaultValue = "") Long newOwner) {
+            HttpServletRequest request,
+            @RequestParam(value = "id", required = true, defaultValue = "") Long id,
+            @RequestParam(value = "new_owner", required = false, defaultValue = "") Long newOwner) {
         HttpSession session = request.getSession();
         if (session == null || session.getAttribute(USER_LOGIN_STATE) == null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("login first");

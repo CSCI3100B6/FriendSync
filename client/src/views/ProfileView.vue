@@ -26,7 +26,10 @@
       <div class="profile-header">
         <div class="profile-avatar">
           <img
-            :src="userInfo?.avatar || 'https://img01.yzcdn.cn/vant/cat.jpeg'"
+            :src="
+              userInfo?.avatar ||
+              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStmeAfZR3Qcxz2bdr35DgXK8sehEeern-fNg&s'
+            "
             alt="頭像"
           />
         </div>

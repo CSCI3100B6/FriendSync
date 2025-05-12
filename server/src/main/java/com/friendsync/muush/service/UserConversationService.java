@@ -8,7 +8,8 @@ import com.friendsync.muush.repo.UserConversation;
 
 public interface UserConversationService extends IService<UserConversation> {
     public List<Conversation> getJoinedConversation(Long userId);
-    public Conversation join(Long userId, Long conversationId);
-    public Conversation joinWithLicense(Long userId, Long conversationId, String license);
+    public Conversation join(Long userId, Long ConversationId);
+    public Conversation joinWithLicense(Long userId, Long ConversationId, String license);
+
     public Boolean leave(Long userId, Long conversationId, Long newOwner);
 }

@@ -1,4 +1,4 @@
-package com.friendsync.stevenpang.model.enums.request;
+package com.friendsync.stevenpang.model.request;
 
 import lombok.Data;
 
@@ -11,9 +11,8 @@ import java.io.Serializable;
  */
 @Data
 public class UserRegisterRequest implements Serializable {
-    private static final long serialVersionUID = 3191241716373120793L;
+    private static final long serialVersionUID = 114514L;
     private String userAccount;
     private String userPassword;
     private String checkPassword;
-    private String planetCode;
 }
